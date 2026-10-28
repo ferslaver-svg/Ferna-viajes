@@ -23,6 +23,14 @@
       width: 100%; padding: 12px; border: 1px solid #ccd8d2;
       border-radius: 9px; font-size: 16px;
     }
+    .checkbox-label {
+      display: flex; align-items: center; gap: 10px;
+      line-height: 1.4; cursor: pointer;
+    }
+    .checkbox-label input {
+      width: 20px; height: 20px; margin: 0; accent-color: #176b52;
+      flex: 0 0 auto;
+    }
     button, .button {
       display: block; width: 100%; padding: 13px; margin-top: 14px;
       border: 0; border-radius: 10px; background: #176b52;
@@ -67,6 +75,16 @@
     <label for="peajeVuelta">Peajes de vuelta ($)</label>
     <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
     <p class="note">Cargá manualmente los peajes. Los importes pueden cambiar según la ruta.</p>
+
+    <label for="horasEspera">Horas de espera</label>
+    <input id="horasEspera" type="number" min="0" step="1" value="0">
+    <p class="note">Cada hora suma $2.000 al total.</p>
+
+    <label class="checkbox-label" for="ganancia">
+      <input id="ganancia" type="checkbox">
+      Aplicar un 120% extra de ganancia
+    </label>
+    <p class="note">Al marcarla, el total se multiplica por 2,2.</p>
   </section>
 
   <section>
@@ -75,15 +93,20 @@
       Distancia total: <strong id="kmTotal">—</strong><br>
       Combustible estimado: <strong id="litros">—</strong><br>
       Costo de combustible: <strong id="costoNafta">—</strong><br>
-      Total de peajes: <strong id="costoPeajes">—</strong>
+      Total de peajes: <strong id="costoPeajes">—</strong><br>
+      Costo de espera: <strong id="costoEspera">—</strong>
     </div>
     <p class="total">Total estimado: <span id="total">—</span></p>
   </section>
 </main>
 
 <script>
-  const ids = ["origen", "destino", "distancia", "consumo", "precio", "peajeIda", "peajeVuelta"];
+  const ids = [
+    "origen", "destino", "distancia", "consumo", "precio",
+    "peajeIda", "peajeVuelta", "horasEspera"
+  ];
   const campos = ids.map(id => document.getElementById(id));
+  const ganancia = document.getElementById("ganancia");
 
   function moneda(valor) {
     return new Intl.NumberFormat("es-AR", {
@@ -95,6 +118,7 @@
     const datos = Object.fromEntries(ids.map(id => [
       id, document.getElementById(id).value
     ]));
+    datos.ganancia = ganancia.checked;
 
     try { localStorage.setItem("viajesFerna", JSON.stringify(datos)); } catch {}
 
@@ -111,30 +135,41 @@
     const precio = Number(precioTexto) || 0;
     const peajes = (Number(document.getElementById("peajeIda").value) || 0) +
                    (Number(document.getElementById("peajeVuelta").value) || 0);
+    const horas = Number(document.getElementById("horasEspera").value) || 0;
 
     const kmTotal = km * 2;
     const litros = kmTotal * consumo / 100;
     const nafta = litros * precio;
+    const costoEspera = horas * 2000;
+    const subtotal = nafta + peajes + costoEspera;
+    const total = ganancia.checked ? subtotal * 2.2 : subtotal;
 
-    document.getElementById("kmTotal").textContent = kmTotal.toLocaleString("es-AR") + " km";
-    document.getElementById("litros").textContent = litros.toLocaleString("es-AR", {
-      maximumFractionDigits: 2
-    }) + " L";
+    document.getElementById("kmTotal").textContent =
+      kmTotal.toLocaleString("es-AR") + " km";
+    document.getElementById("litros").textContent =
+      litros.toLocaleString("es-AR", { maximumFractionDigits: 2 }) + " L";
     document.getElementById("costoNafta").textContent =
       precioTexto ? moneda(nafta) : "Ingresá el precio por litro";
     document.getElementById("costoPeajes").textContent = moneda(peajes);
+    document.getElementById("costoEspera").textContent = moneda(costoEspera);
     document.getElementById("total").textContent =
-      precioTexto ? moneda(nafta + peajes) : "Ingresá el precio de la nafta";
+      precioTexto ? moneda(total) : "Ingresá el precio de la nafta";
   }
 
   try {
     const guardados = JSON.parse(localStorage.getItem("viajesFerna") || "{}");
     ids.forEach(id => {
-      if (guardados[id] !== undefined) document.getElementById(id).value = guardados[id];
+      if (guardados[id] !== undefined) {
+        document.getElementById(id).value = guardados[id];
+      }
     });
+    if (guardados.ganancia !== undefined) {
+      ganancia.checked = guardados.ganancia;
+    }
   } catch {}
 
   campos.forEach(campo => campo.addEventListener("input", actualizar));
+  ganancia.addEventListener("change", actualizar);
   actualizar();
 </script>
 </body>
