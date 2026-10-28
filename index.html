@@ -6,63 +6,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#176b52">
   <title>Viajes de Ferna</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
-      margin: 0; padding: 20px; background: #f2f6f4;
-      color: #20312b; font: 16px Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f2f6f4;
+      color: #20312b;
+      font: 16px Arial, sans-serif;
     }
+
     main { max-width: 520px; margin: auto; }
     h1 { color: #176b52; font-size: 25px; }
+
     section {
-      background: white; border-radius: 16px; padding: 18px;
-      margin: 14px 0; box-shadow: 0 2px 10px #163b2b12;
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin: 14px 0;
+      box-shadow: 0 2px 10px #163b2b12;
     }
-    label { display: block; font-weight: bold; margin: 14px 0 6px; }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 14px 0 6px;
+    }
+
     input {
-      width: 100%; padding: 12px; border: 1px solid #ccd8d2;
-      border-radius: 9px; font-size: 16px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd8d2;
+      border-radius: 9px;
+      font-size: 16px;
     }
+
+    .autocomplete { position: relative; }
+
+    .suggestions {
+      display: none;
+      position: absolute;
+      z-index: 10;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 240px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ccd8d2;
+      border-radius: 9px;
+      box-shadow: 0 4px 12px #163b2b20;
+    }
+
+    .suggestions button {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      border: 0;
+      border-bottom: 1px solid #eef2f0;
+      background: white;
+      color: #20312b;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .suggestions button:hover { background: #f2f6f4; }
+
     .checkbox-label {
-      display: flex; align-items: center; gap: 10px;
-      line-height: 1.4; cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.4;
+      cursor: pointer;
     }
+
     .checkbox-label input {
-      width: 20px; height: 20px; margin: 0; accent-color: #176b52;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: #176b52;
       flex: 0 0 auto;
     }
-    button, .button {
-      display: block; width: 100%; padding: 13px; margin-top: 14px;
-      border: 0; border-radius: 10px; background: #176b52;
-      color: white; text-align: center; text-decoration: none;
-      font-size: 16px; font-weight: bold;
+
+    .button {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #176b52;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
     }
-    .note { color: #62736c; font-size: 13px; line-height: 1.4; }
+
+    .note {
+      color: #62736c;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
     .result { font-size: 17px; line-height: 1.8; }
     .total { font-size: 21px; font-weight: bold; color: #176b52; }
+    #estadoRuta { min-height: 18px; }
   </style>
 </head>
+
 <body>
 <main>
   <h1>🚗 Viajes de Ferna</h1>
 
   <section>
     <h2>Ruta</h2>
+
     <label for="origen">Origen</label>
-    <input id="origen" value="Intendente Quintana 926, Gualeguay, Entre Ríos">
+    <div class="autocomplete">
+      <input id="origen" autocomplete="off"
+        value="Intendente Quintana 926, Gualeguay, Entre Ríos">
+      <div class="suggestions" id="sugerenciasOrigen"></div>
+    </div>
 
     <label for="destino">Destino</label>
-    <input id="destino" value="Fraternidad 1414, Paraná, Entre Ríos">
+    <div class="autocomplete">
+      <input id="destino" autocomplete="off"
+        value="Fraternidad 1414, Paraná, Entre Ríos">
+      <div class="suggestions" id="sugerenciasDestino"></div>
+    </div>
+
+    <p class="note">Escribí una dirección o ciudad y elegí una sugerencia para cada campo.</p>
 
     <label for="distancia">Distancia de ida (km)</label>
     <input id="distancia" type="number" min="0" step="0.1" value="192">
-    <p class="note">Referencia inicial, no verificada. Revisá los kilómetros de la ruta y actualizalos aquí.</p>
+    <p class="note" id="estadoRuta">
+      Elegí una sugerencia para el origen y otra para el destino.
+    </p>
 
-    <a class="button" id="mapa" target="_blank" rel="noopener">Abrir ruta en Google Maps</a>
+    <a class="button" id="mapa" target="_blank" rel="noopener">
+      Abrir ruta en Google Maps
+    </a>
   </section>
 
   <section>
     <h2>Vehículo y costos</h2>
+
     <label for="consumo">Consumo (litros cada 100 km)</label>
     <input id="consumo" type="number" min="0" step="0.1" value="8.5">
 
@@ -105,44 +197,64 @@
     "origen", "destino", "distancia", "consumo", "precio",
     "peajeIda", "peajeVuelta", "horasEspera"
   ];
+
   const campos = ids.map(id => document.getElementById(id));
   const ganancia = document.getElementById("ganancia");
+  const lugares = { origen: null, destino: null };
+  const temporizadores = {};
+  let numeroSolicitudRuta = 0;
 
   function moneda(valor) {
     return new Intl.NumberFormat("es-AR", {
-      style: "currency", currency: "ARS", maximumFractionDigits: 2
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 2
     }).format(valor);
   }
 
-  function actualizar() {
+  function guardar() {
     const datos = Object.fromEntries(ids.map(id => [
       id, document.getElementById(id).value
     ]));
+
     datos.ganancia = ganancia.checked;
+    datos.lugares = lugares;
 
-    try { localStorage.setItem("viajesFerna", JSON.stringify(datos)); } catch {}
+    try {
+      localStorage.setItem("viajesFerna", JSON.stringify(datos));
+    } catch {}
+  }
 
-    const origen = document.getElementById("origen").value.trim();
-    const destino = document.getElementById("destino").value.trim();
+  function actualizar() {
+    guardar();
+
+    const origenTexto = document.getElementById("origen").value.trim();
+    const destinoTexto = document.getElementById("destino").value.trim();
+
     document.getElementById("mapa").href =
       "https://www.google.com/maps/dir/?api=1&origin=" +
-      encodeURIComponent(origen) + "&destination=" +
-      encodeURIComponent(destino) + "&travelmode=driving";
+      encodeURIComponent(origenTexto) +
+      "&destination=" + encodeURIComponent(destinoTexto) +
+      "&travelmode=driving";
 
     const km = Number(document.getElementById("distancia").value) || 0;
     const consumo = Number(document.getElementById("consumo").value) || 0;
     const precioTexto = document.getElementById("precio").value;
     const precio = Number(precioTexto) || 0;
-    const peajes = (Number(document.getElementById("peajeIda").value) || 0) +
-                   (Number(document.getElementById("peajeVuelta").value) || 0);
-    const horas = Number(document.getElementById("horasEspera").value) || 0;
 
+    const peajes =
+      (Number(document.getElementById("peajeIda").value) || 0) +
+      (Number(document.getElementById("peajeVuelta").value) || 0);
+
+    const horas = Number(document.getElementById("horasEspera").value) || 0;
     const kmTotal = km * 2;
     const litros = kmTotal * consumo / 100;
     const nafta = litros * precio;
     const costoEspera = horas * 2000;
     const subtotal = nafta + peajes + costoEspera;
-    const total = ganancia.checked ? subtotal * 2.2 : subtotal;
+    const total = ganancia
+    ```js
+.checked ? subtotal * 2.2 : subtotal;
 
     document.getElementById("kmTotal").textContent =
       kmTotal.toLocaleString("es-AR") + " km";
@@ -156,21 +268,197 @@
       precioTexto ? moneda(total) : "Ingresá el precio de la nafta";
   }
 
+  function cajaSugerencias(campo) {
+    return document.getElementById(
+      campo === "origen" ? "sugerenciasOrigen" : "sugerenciasDestino"
+    );
+  }
+
+  function ocultarSugerencias(campo) {
+    const caja = cajaSugerencias(campo);
+    caja.style.display = "none";
+    caja.innerHTML = "";
+  }
+
+  async function buscarSugerencias(campo) {
+    const input = document.getElementById(campo);
+    const texto = input.value.trim();
+    const caja = cajaSugerencias(campo);
+
+    lugares[campo] = null;
+    guardar();
+
+    if (texto.length < 3) {
+      ocultarSugerencias(campo);
+      return;
+    }
+
+    if (temporizadores[campo]) clearTimeout(temporizadores[campo]);
+
+    temporizadores[campo] = setTimeout(async () => {
+      caja.innerHTML = "<button type='button'>Buscando…</button>";
+      caja.style.display = "block";
+
+      try {
+        const url = "https://photon.komoot.io/api/?limit=5&lang=es&q=" +
+          encodeURIComponent(texto);
+
+        const respuesta = await fetch(url);
+        if (!respuesta.ok) throw new Error("No se pudieron buscar lugares");
+
+        const datos = await respuesta.json();
+
+        if (input.value.trim() !== texto) return;
+
+        caja.innerHTML = "";
+
+        if (!datos.features || datos.features.length === 0) {
+          caja.innerHTML = "<button type='button'>No se encontraron lugares</button>";
+          caja.style.display = "block";
+          return;
+        }
+
+        datos.features.forEach(lugar => {
+          const propiedades = lugar.properties || {};
+          const coordenadas = lugar.geometry.coordinates;
+          const partes = [
+            propiedades.name,
+            propiedades.street,
+            propiedades.housenumber,
+            propiedades.city || propiedades.town || propiedades.village,
+            propiedades.state,
+            propiedades.country
+          ].filter(Boolean);
+
+          const nombre = [...new Set(partes)].join(", ");
+          if (!nombre || !coordenadas) return;
+
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.textContent = nombre;
+
+          boton.addEventListener("click", () => {
+            input.value = nombre;
+            lugares[campo] = {
+              nombre: nombre,
+              lon: coordenadas[0],
+              lat: coordenadas[1]
+            };
+            ocultarSugerencias(campo);
+            guardar();
+            calcularRuta();
+            actualizar();
+          });
+
+          caja.appendChild(boton);
+        });
+
+        if (!caja.children.length) {
+          caja.innerHTML = "<button type='button'>No se encontraron lugares</button>";
+        }
+
+        caja.style.display = "block";
+      } catch (error) {
+        caja.innerHTML =
+          "<button type='button'>Error al buscar. Probá de nuevo.</button>";
+        caja.style.display = "block";
+      }
+    }, 400);
+  }
+
+  async function calcularRuta() {
+    if (!lugares.origen || !lugares.destino) {
+      document.getElementById("estadoRuta").textContent =
+        "Elegí una sugerencia para el origen y otra para el destino.";
+      return;
+    }
+
+    const solicitudActual = ++numeroSolicitudRuta;
+    const estado = document.getElementById("estadoRuta");
+    estado.textContent = "Calculando la ruta…";
+
+    try {
+      const inicio = lugares.origen;
+      const fin = lugares.destino;
+      const url = "https://router.project-osrm.org/route/v1/driving/" +
+        inicio.lon + "," + inicio.lat + ";" + fin.lon + "," + fin.lat +
+        "?overview=false";
+
+      const respuesta = await fetch(url);
+      if (!respuesta.ok) throw new Error("No se pudo calcular la ruta");
+
+      const datos = await respuesta.json();
+
+      if (solicitudActual !== numeroSolicitudRuta) return;
+
+      if (datos.code !== "Ok" || !datos.routes || !datos.routes.length) {
+        throw new Error("No se encontró una ruta");
+      }
+
+      const kilometros = datos.routes[0].distance / 1000;
+      document.getElementById("distancia").value =
+        kilometros.toFixed(1);
+
+      estado.textContent =
+        "Distancia calculada automáticamente. Podés corregirla si hace falta.";
+      actualizar();
+    } catch (error) {
+      if (solicitudActual === numeroSolicitudRuta) {
+        estado.textContent =
+          "No se pudo calcular la ruta. Podés ingresar los kilómetros manualmente.";
+      }
+    }
+  }
+
   try {
-    const guardados = JSON.parse(localStorage.getItem("viajesFerna") || "{}");
+    const guardados = JSON.parse(
+      localStorage.getItem("viajesFerna") || "{}"
+    );
+
     ids.forEach(id => {
       if (guardados[id] !== undefined) {
         document.getElementById(id).value = guardados[id];
       }
     });
-    if (guardados.ganancia !== undefined) {
+
+    if (typeof guardados.ganancia === "boolean") {
       ganancia.checked = guardados.ganancia;
+    }
+
+    if (guardados.lugares) {
+      lugares.origen = guardados.lugares.origen || null;
+      lugares.destino = guardados.lugares.destino || null;
     }
   } catch {}
 
-  campos.forEach(campo => campo.addEventListener("input", actualizar));
+  document.getElementById("origen").addEventListener("input", () => {
+    buscarSugerencias("origen");
+    actualizar();
+  });
+
+  document.getElementById("destino").addEventListener("input", () => {
+    buscarSugerencias("destino");
+    actualizar();
+  });
+
+  campos
+    .filter(campo => campo.id !== "origen" && campo.id !== "destino")
+    .forEach(campo => campo.addEventListener("input", actualizar));
+
   ganancia.addEventListener("change", actualizar);
+
+  document.addEventListener("click", evento => {
+    if (!evento.target.closest(".autocomplete")) {
+      ocultarSugerencias("origen");
+      ocultarSugerencias("destino");
+    }
+  });
+
   actualizar();
+
+  if (lugares.origen && lugares.destino) {
+    calcularRuta();
+  }
 </script>
 </body>
 </html>
