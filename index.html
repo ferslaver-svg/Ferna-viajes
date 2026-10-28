@@ -252,11 +252,11 @@
     const nafta = litros * precio;
     const costoEspera = horas * 2000;
     const subtotal = nafta + peajes + costoEspera;
-    const total = ganancia
     ```js
-.checked ? subtotal * 2.2 : subtotal;
+const total = ganancia.checked ? subtotal * 2.2 : subtotal;
+```
 
-    document.getElementById("kmTotal").textContent =
+  document.getElementById("kmTotal").textContent =
       kmTotal.toLocaleString("es-AR") + " km";
     document.getElementById("litros").textContent =
       litros.toLocaleString("es-AR", { maximumFractionDigits: 2 }) + " L";
