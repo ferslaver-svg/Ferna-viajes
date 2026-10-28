@@ -1,0 +1,142 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#176b52">
+  <title>Viajes de Ferna</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 20px; background: #f2f6f4;
+      color: #20312b; font: 16px Arial, sans-serif;
+    }
+    main { max-width: 520px; margin: auto; }
+    h1 { color: #176b52; font-size: 25px; }
+    section {
+      background: white; border-radius: 16px; padding: 18px;
+      margin: 14px 0; box-shadow: 0 2px 10px #163b2b12;
+    }
+    label { display: block; font-weight: bold; margin: 14px 0 6px; }
+    input {
+      width: 100%; padding: 12px; border: 1px solid #ccd8d2;
+      border-radius: 9px; font-size: 16px;
+    }
+    button, .button {
+      display: block; width: 100%; padding: 13px; margin-top: 14px;
+      border: 0; border-radius: 10px; background: #176b52;
+      color: white; text-align: center; text-decoration: none;
+      font-size: 16px; font-weight: bold;
+    }
+    .note { color: #62736c; font-size: 13px; line-height: 1.4; }
+    .result { font-size: 17px; line-height: 1.8; }
+    .total { font-size: 21px; font-weight: bold; color: #176b52; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>🚗 Viajes de Ferna</h1>
+
+  <section>
+    <h2>Ruta</h2>
+    <label for="origen">Origen</label>
+    <input id="origen" value="Intendente Quintana 926, Gualeguay, Entre Ríos">
+
+    <label for="destino">Destino</label>
+    <input id="destino" value="Fraternidad 1414, Paraná, Entre Ríos">
+
+    <label for="distancia">Distancia de ida (km)</label>
+    <input id="distancia" type="number" min="0" step="0.1" value="192">
+    <p class="note">Referencia inicial, no verificada. Revisá los kilómetros de la ruta y actualizalos aquí.</p>
+
+    <a class="button" id="mapa" target="_blank" rel="noopener">Abrir ruta en Google Maps</a>
+  </section>
+
+  <section>
+    <h2>Vehículo y costos</h2>
+    <label for="consumo">Consumo (litros cada 100 km)</label>
+    <input id="consumo" type="number" min="0" step="0.1" value="8.5">
+
+    <label for="precio">Precio por litro de nafta Súper YPF ($)</label>
+    <input id="precio" type="number" min="0" step="0.01" placeholder="Ingresá el precio">
+
+    <label for="peajeIda">Peajes de ida ($)</label>
+    <input id="peajeIda" type="number" min="0" step="0.01" value="0">
+
+    <label for="peajeVuelta">Peajes de vuelta ($)</label>
+    <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
+    <p class="note">Cargá manualmente los peajes. Los importes pueden cambiar según la ruta.</p>
+  </section>
+
+  <section>
+    <h2>Estimación del viaje completo</h2>
+    <div class="result">
+      Distancia total: <strong id="kmTotal">—</strong><br>
+      Combustible estimado: <strong id="litros">—</strong><br>
+      Costo de combustible: <strong id="costoNafta">—</strong><br>
+      Total de peajes: <strong id="costoPeajes">—</strong>
+    </div>
+    <p class="total">Total estimado: <span id="total">—</span></p>
+  </section>
+</main>
+
+<script>
+  const ids = ["origen", "destino", "distancia", "consumo", "precio", "peajeIda", "peajeVuelta"];
+  const campos = ids.map(id => document.getElementById(id));
+
+  function moneda(valor) {
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency", currency: "ARS", maximumFractionDigits: 2
+    }).format(valor);
+  }
+
+  function actualizar() {
+    const datos = Object.fromEntries(ids.map(id => [
+      id, document.getElementById(id).value
+    ]));
+
+    try { localStorage.setItem("viajesFerna", JSON.stringify(datos)); } catch {}
+
+    const origen = document.getElementById("origen").value.trim();
+    const destino = document.getElementById("destino").value.trim();
+    document.getElementById("mapa").href =
+      "https://www.google.com/maps/dir/?api=1&origin=" +
+      encodeURIComponent(origen) + "&destination=" +
+      encodeURIComponent(destino) + "&travelmode=driving";
+
+    const km = Number(document.getElementById("distancia").value) || 0;
+    const consumo = Number(document.getElementById("consumo").value) || 0;
+    const precioTexto = document.getElementById("precio").value;
+    const precio = Number(precioTexto) || 0;
+    const peajes = (Number(document.getElementById("peajeIda").value) || 0) +
+                   (Number(document.getElementById("peajeVuelta").value) || 0);
+
+    const kmTotal = km * 2;
+    const litros = kmTotal * consumo / 100;
+    const nafta = litros * precio;
+
+    document.getElementById("kmTotal").textContent = kmTotal.toLocaleString("es-AR") + " km";
+    document.getElementById("litros").textContent = litros.toLocaleString("es-AR", {
+      maximumFractionDigits: 2
+    }) + " L";
+    document.getElementById("costoNafta").textContent =
+      precioTexto ? moneda(nafta) : "Ingresá el precio por litro";
+    document.getElementById("costoPeajes").textContent = moneda(peajes);
+    document.getElementById("total").textContent =
+      precioTexto ? moneda(nafta + peajes) : "Ingresá el precio de la nafta";
+  }
+
+  try {
+    const guardados = JSON.parse(localStorage.getItem("viajesFerna") || "{}");
+    ids.forEach(id => {
+      if (guardados[id] !== undefined) document.getElementById(id).value = guardados[id];
+    });
+  } catch {}
+
+  campos.forEach(campo => campo.addEventListener("input", actualizar));
+  actualizar();
+</script>
+</body>
+</html>
+```
