@@ -122,14 +122,15 @@ html
     <p class="total">Total estimado: <span id="total">—</span></p>
   </section>
 </main>
-
 <script>
   const ids = [
     "origen", "destino", "distancia", "consumo", "precio",
     "peajeIda", "peajeVuelta", "horasEspera"
   ];
+
   const lugares = { origen: null, destino: null };
   const temporizadores = {};
+  const numeroBusqueda = { origen: 0, destino: 0 };
   const ganancia = document.getElementById("ganancia");
   let numeroSolicitudRuta = 0;
 
@@ -146,12 +147,15 @@ html
     ids.forEach(id => {
       datos[id] = document.getElementById(id).value;
     });
+
     datos.ganancia = ganancia.checked;
     datos.lugares = lugares;
 
     try {
       localStorage.setItem("viajesFerna", JSON.stringify(datos));
-    } catch (error) {}
+    } catch (error) {
+      // La página sigue funcionando aunque el almacenamiento no esté disponible.
+    }
   }
 
   function actualizar() {
@@ -170,11 +174,12 @@ html
     const consumo = Number(document.getElementById("consumo").value) || 0;
     const precioTexto = document.getElementById("precio").value;
     const precio = Number(precioTexto) || 0;
+
     const peajes =
       (Number(document.getElementById("peajeIda").value) || 0) +
       (Number(document.getElementById("peajeVuelta").value) || 0);
-    const horas = Number(document.getElementById("horasEspera").value) || 0;
 
+    const horas = Number(document.getElementById("horasEspera").value) || 0;
     const kmTotal = km * 2;
     const litros = kmTotal * consumo / 100;
     const nafta = litros * precio;
@@ -206,13 +211,32 @@ html
     caja.innerHTML = "";
   }
 
+  function mostrarMensaje(caja, mensaje) {
+    caja.innerHTML = "";
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = mensaje;
+    boton.disabled = true;
+    caja.appendChild(boton);
+    caja.style.display = "block";
+  }
+
   function buscarSugerencias(campo) {
     const input = document.getElementById(campo);
     const texto = input.value.trim();
     const caja = cajaSugerencias(campo);
 
+    // El texto cambió: la selección previa ya no corresponde.
     lugares[campo] = null;
-    guardar();
+    numeroBusqueda[campo]++;
+    numeroSolicitudRuta++;
+
+    document.getElementById("distancia").value = "";
+    document.getElementById("estadoRuta").textContent =
+      "Elegí una sugerencia para el origen y el destino.";
+    actualizar();
+
+    const busquedaActual = numeroBusqueda[campo];
 
     if (temporizadores[campo]) clearTimeout(temporizadores[campo]);
 
@@ -222,24 +246,28 @@ html
     }
 
     temporizadores[campo] = setTimeout(async () => {
-      caja.innerHTML = "<button type='button'>Buscando…</button>";
-      caja.style.display = "block";
+      mostrarMensaje(caja, "Buscando…");
 
       try {
         const url =
           "https://photon.komoot.io/api/?limit=5&lang=es&q=" +
           encodeURIComponent(texto);
+
         const respuesta = await fetch(url);
         if (!respuesta.ok) throw new Error("Error de búsqueda");
 
         const datos = await respuesta.json();
-        if (input.value.trim() !== texto) return;
+
+        // Ignora respuestas de búsquedas anteriores.
+        if (
+          busquedaActual !== numeroBusqueda[campo] ||
+          input.value.trim() !== texto
+        ) return;
 
         caja.innerHTML = "";
 
         if (!datos.features || datos.features.length === 0) {
-          caja.innerHTML =
-            "<button type='button'>No se encontraron lugares</button>";
+          mostrarMensaje(caja, "No se encontraron lugares");
           return;
         }
 
@@ -267,12 +295,12 @@ html
           boton.addEventListener("click", () => {
             input.value = nombre;
             lugares[campo] = {
-              nombre: nombre,
+              nombre,
               lon: coordenadas[0],
               lat: coordenadas[1]
             };
+
             ocultarSugerencias(campo);
-            guardar();
             actualizar();
             calcularRuta();
           });
@@ -281,41 +309,46 @@ html
         });
 
         if (!caja.children.length) {
-          caja.innerHTML =
-            "<button type='button'>No se encontraron lugares</button>";
+          mostrarMensaje(caja, "No se encontraron lugares");
+        } else {
+          caja.style.display = "block";
         }
-        caja.style.display = "block";
       } catch (error) {
-        caja.innerHTML =
-          "<button type='button'>Error al buscar. Probá de nuevo.</button>";
-        caja.style.display = "block";
+        if (busquedaActual === numeroBusqueda[campo]) {
+          mostrarMensaje(caja, "Error al buscar. Probá de nuevo.");
+        }
       }
     }, 400);
   }
 
   async function calcularRuta() {
+    const estado = document.getElementById("estadoRuta");
+
     if (!lugares.origen || !lugares.destino) {
-      document.getElementById("estadoRuta").textContent =
+      estado.textContent =
         "Elegí una sugerencia para el origen y el destino.";
       return;
     }
 
     const solicitudActual = ++numeroSolicitudRuta;
-    const estado = document.getElementById("estadoRuta");
     estado.textContent = "Calculando la ruta…";
 
     try {
       const inicio = lugares.origen;
       const fin = lugares.destino;
+
       const url =
         "https://router.project-osrm.org/route/v1/driving/" +
         inicio.lon + "," + inicio.lat + ";" +
-        fin.lon + "," + fin.lat + "?overview=false";
+        fin.lon + "," + fin.lat +
+        "?overview=false";
 
       const respuesta = await fetch(url);
       if (!respuesta.ok) throw new Error("Error de ruta");
 
       const datos = await respuesta.json();
+
+      // Evita que una respuesta vieja reemplace la ruta más reciente.
       if (solicitudActual !== numeroSolicitudRuta) return;
 
       if (datos.code !== "Ok" || !datos.routes || !datos.routes.length) {
@@ -324,6 +357,7 @@ html
 
       document.getElementById("distancia").value =
         (datos.routes[0].distance / 1000).toFixed(1);
+
       estado.textContent =
         "Distancia calculada automáticamente. Podés corregirla.";
       actualizar();
@@ -335,6 +369,7 @@ html
     }
   }
 
+  // Recupera los datos guardados.
   try {
     const guardados = JSON.parse(
       localStorage.getItem("viajesFerna") || "{}"
@@ -354,16 +389,16 @@ html
       lugares.origen = guardados.lugares.origen || null;
       lugares.destino = guardados.lugares.destino || null;
     }
-  } catch (error) {}
+  } catch (error) {
+    // Si los datos guardados no se pueden leer, se usan los valores iniciales.
+  }
 
   document.getElementById("origen").addEventListener("input", () => {
     buscarSugerencias("origen");
-    actualizar();
   });
 
   document.getElementById("destino").addEventListener("input", () => {
     buscarSugerencias("destino");
-    actualizar();
   });
 
   [
