@@ -226,7 +226,6 @@
       cursor: pointer;
     }
 
-    /* Tarjeta oscura de resumen */
     .ticket-card {
       background: linear-gradient(145deg, #132a23 0%, #0b1915 100%);
       color: #e6f0ec;
@@ -314,7 +313,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* Desplegable de Clientes */
     details.client-dropdown {
       background: var(--card);
       border-radius: 20px;
@@ -734,4 +732,14 @@
     document.getElementById("costoNafta").textContent = moneda(costoNafta);
     document.getElementById("costoPeajes").textContent = moneda(peajes);
     document.getElementById("costoEspera").textContent = moneda(costoEspera);
-    document.
+    document.getElementById("montoGanancia").textContent = moneda(montoGanancia);
+    document.getElementById("total").textContent = moneda(total);
+  }
+
+  function cajaSugerencias(campo) {
+    return document.getElementById(
+      campo === "origen" ? "sugerenciasOrigen" : "sugerenciasDestino"
+    );
+  }
+
+  function ocultarSugerencias(campo) 
