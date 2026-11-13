@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#0f4c3a">
-  <title>Viajes de Ferna | Presupuestos y Clientes</title>
+  <title>Viajes de Ferna</title>
   <style>
     :root {
       --primary: #0f4c3a;
       --primary-light: #1a7a5e;
-      --accent: #10b981;
       --bg: #eef3f1;
       --card: #ffffff;
       --text: #1e2925;
@@ -17,40 +16,25 @@
       --border: #dce5e1;
       --star: #f59e0b;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       padding: 0 0 36px;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
-
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
       color: white;
       padding: 22px 20px 38px;
       border-bottom-left-radius: 26px;
       border-bottom-right-radius: 26px;
-      box-shadow: 0 4px 20px rgba(15, 76, 58, 0.2);
       text-align: center;
+      box-shadow: 0 4px 20px rgba(15, 76, 58, 0.2);
     }
-
-    header h1 {
-      margin: 0;
-      font-size: 23px;
-      letter-spacing: -0.3px;
-    }
-
-    header p {
-      margin: 4px 0 14px;
-      font-size: 13px;
-      opacity: 0.85;
-    }
-
+    header h1 { margin: 0; font-size: 23px; }
+    header p { margin: 4px 0 14px; font-size: 13px; opacity: 0.9; }
     .tabs {
       display: flex;
       gap: 8px;
@@ -60,65 +44,49 @@
       padding: 4px;
       border-radius: 14px;
     }
-
     .tab-btn {
       flex: 1;
       padding: 9px 12px;
       border: 0;
       border-radius: 11px;
       background: transparent;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-
     .tab-btn.active {
       background: #ffffff;
       color: var(--primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
-
     main {
       max-width: 480px;
       margin: -22px auto 0;
       padding: 0 16px;
     }
-
     .view { display: none; }
     .view.active { display: block; }
-
     section {
       background: var(--card);
       border-radius: 20px;
       padding: 20px;
       margin-bottom: 16px;
       box-shadow: 0 4px 16px rgba(20, 45, 35, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.8);
     }
-
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       margin: 0 0 14px;
       font-size: 15px;
       font-weight: 700;
       color: var(--primary);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
-
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
     .field { margin-bottom: 14px; }
     .field:last-child { margin-bottom: 0; }
-
     label {
       display: block;
       font-size: 13px;
@@ -126,7 +94,6 @@
       color: var(--muted);
       margin-bottom: 6px;
     }
-
     input[type="text"],
     input[type="tel"],
     input[type="number"] {
@@ -136,21 +103,15 @@
       border-radius: 12px;
       background: #f9fbfa;
       color: var(--text);
-      font-family: inherit;
       font-size: 15px;
       font-weight: 500;
-      transition: all 0.2s ease;
     }
-
     input:focus {
       outline: none;
       border-color: var(--primary-light);
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(26, 122, 94, 0.12);
     }
-
     .autocomplete { position: relative; }
-
     .suggestions {
       display: none;
       position: absolute;
@@ -158,14 +119,13 @@
       top: calc(100% + 4px);
       left: 0;
       right: 0;
-      max-height: 240px;
+      max-height: 220px;
       overflow-y: auto;
       background: white;
       border: 1.5px solid var(--primary-light);
       border-radius: 14px;
       box-shadow: 0 10px 25px rgba(15, 40, 30, 0.2);
     }
-
     .suggestions button {
       display: block;
       width: 100%;
@@ -175,15 +135,10 @@
       background: white;
       color: var(--text);
       text-align: left;
-      font-size: 13.5px;
-      line-height: 1.35;
+      font-size: 14px;
       cursor: pointer;
     }
-
-    .suggestions button:last-child { border-bottom: 0; }
-    .suggestions button:hover,
-    .suggestions button:active { background: #e8f5f0; }
-
+    .suggestions button:hover { background: #e8f5f0; }
     .status-badge {
       display: inline-block;
       margin-top: 8px;
@@ -194,7 +149,6 @@
       font-size: 12.5px;
       font-weight: 600;
     }
-
     .switch-row {
       display: flex;
       align-items: center;
@@ -205,49 +159,24 @@
       border-radius: 12px;
       cursor: pointer;
     }
-
-    .switch-row span {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .switch-row small {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .switch-row input {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
+    .switch-row span { font-size: 14px; font-weight: 600; }
+    .switch-row small { display: block; font-size: 12px; color: var(--muted); }
+    .switch-row input { width: 22px; height: 22px; accent-color: var(--primary); }
     .ticket-card {
       background: linear-gradient(145deg, #132a23 0%, #0b1915 100%);
       color: #e6f0ec;
-      border: none;
     }
-
     .ticket-card .section-title { color: #6ee7b7; }
-
     .ticket-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding: 7px 0;
       font-size: 14.5px;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
     }
-
-    .ticket-row:last-of-type { border-bottom: none; }
     .ticket-row span { color: #9eb5ad; }
-    .ticket-row strong { font-weight: 600; color: #ffffff; }
+    .ticket-row strong { color: #ffffff; }
     .ticket-profit strong { color: #6ee7b7; }
-
     .total-box {
       margin-top: 14px;
       padding: 16px;
@@ -257,21 +186,8 @@
       justify-content: space-between;
       align-items: center;
     }
-
-    .total-box span {
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #a7f3d0;
-    }
-
-    .total-box strong {
-      font-size: 26px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-
+    .total-box span { font-size: 14px; font-weight: 600; color: #a7f3d0; }
+    .total-box strong { font-size: 26px; font-weight: 800; color: #ffffff; }
     .btn {
       display: flex;
       align-items: center;
@@ -286,77 +202,33 @@
       font-weight: 700;
       text-decoration: none;
       cursor: pointer;
-      transition: transform 0.1s ease, opacity 0.2s ease;
     }
-
-    .btn:active { transform: scale(0.98); }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    .btn-maps {
-      background: #e8f5f0;
-      color: var(--primary);
-    }
-
-    .btn-whatsapp {
-      background: #25D366;
-      color: #062e16;
-      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
-    }
-
+    .btn-primary { background: var(--primary); color: #ffffff; }
+    .btn-maps { background: #e8f5f0; color: var(--primary); }
+    .btn-whatsapp { background: #25D366; color: #062e16; }
     .btn-save-trip {
       background: rgba(255, 255, 255, 0.14);
       color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
     details.client-dropdown {
       background: var(--card);
       border-radius: 20px;
       margin-bottom: 16px;
       box-shadow: 0 4px 16px rgba(20, 45, 35, 0.06);
-      overflow: hidden;
     }
-
     details.client-dropdown summary {
-      list-style: none;
       padding: 18px 20px;
       font-size: 15px;
       font-weight: 700;
       color: var(--primary);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #ffffff;
     }
-
-    details.client-dropdown summary::-webkit-details-marker { display: none; }
-
-    details.client-dropdown summary::after {
-      content: "▼";
-      font-size: 12px;
-      transition: transform 0.2s ease;
-    }
-
-    details.client-dropdown[open] summary::after {
-      transform: rotate(180deg);
-    }
-
     .dropdown-body {
       padding: 4px 20px 20px;
       border-top: 1px solid #f0f4f2;
     }
-
-    .star-picker {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
+    .star-picker { display: flex; gap: 8px; margin-top: 4px; }
     .star-btn {
       background: #f4f8f6;
       border: 1.5px solid var(--border);
@@ -365,15 +237,12 @@
       padding: 6px 10px;
       cursor: pointer;
       color: #cbd5e1;
-      transition: all 0.15s ease;
     }
-
     .star-btn.selected {
       color: var(--star);
       border-color: #fcd34d;
       background: #fffbeb;
     }
-
     .client-card {
       background: #f9fbfa;
       border: 1.5px solid var(--border);
@@ -381,64 +250,23 @@
       padding: 14px;
       margin-bottom: 12px;
     }
-
-    .client-card:last-child { margin-bottom: 0; }
-
     .client-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
       margin-bottom: 6px;
     }
-
-    .client-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .client-stars {
-      color: var(--star);
-      font-size: 15px;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    .client-route {
-      font-size: 13.5px;
-      color: var(--text);
-      margin: 4px 0;
-      line-height: 1.4;
-    }
-
-    .client-note {
-      font-size: 12.5px;
-      color: var(--muted);
-      font-style: italic;
-      margin: 4px 0 8px;
-    }
-
+    .client-name { font-size: 16px; font-weight: 700; }
+    .client-stars { color: var(--star); font-size: 15px; }
+    .client-route { font-size: 13.5px; margin: 4px 0; line-height: 1.4; }
+    .client-note { font-size: 12.5px; color: var(--muted); font-style: italic; margin: 4px 0 8px; }
     .client-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding-top: 8px;
       border-top: 1px solid #e6edea;
-      font-size: 13px;
     }
-
-    .client-price {
-      font-weight: 800;
-      color: var(--primary);
-      font-size: 15px;
-    }
-
-    .client-actions {
-      display: flex;
-      gap: 8px;
-    }
-
+    .client-price { font-weight: 800; color: var(--primary); font-size: 15px; }
     .mini-btn {
       padding: 5px 10px;
       border-radius: 8px;
@@ -448,25 +276,16 @@
       cursor: pointer;
       text-decoration: none;
     }
-
     .mini-wa { background: #dcfce7; color: #166534; }
     .mini-del { background: #fee2e2; color: #991b1b; }
-
-    .empty-state {
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      padding: 20px 10px;
-    }
+    .empty-state { text-align: center; color: var(--muted); font-size: 14px; padding: 20px 10px; }
   </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🚗 Viajes de Ferna</h1>
+  <h1>🚗 Viajes de Ferna <small style="font-size:12px;opacity:0.7;">v2.0</small></h1>
   <p>Calculadora de traslados y agenda</p>
-
   <div class="tabs">
     <button type="button" class="tab-btn active" data-tab="cotizador">🧮 Cotizador</button>
     <button type="button" class="tab-btn" data-tab="clientes">👥 Clientes (<span id="contadorClientes">0</span>)</button>
@@ -474,39 +293,29 @@
 </header>
 
 <main>
-  <!-- VISTA 1: COTIZADOR -->
   <div id="vista-cotizador" class="view active">
     <section>
       <h2 class="section-title">📍 Ruta del viaje</h2>
-
       <div class="field autocomplete">
-        <label for="origen">Origen (escribí y tocá una opción)</label>
-        <input id="origen" type="text" autocomplete="off" placeholder="Ej: Gualeguay, Entre Ríos">
+        <label for="origen">Origen</label>
+        <input id="origen" type="text" autocomplete="off" placeholder="Escribí una ciudad (ej: Gualeguay)">
         <div class="suggestions" id="sugerenciasOrigen"></div>
       </div>
-
       <div class="field autocomplete">
-        <label for="destino">Destino (escribí y tocá una opción)</label>
-        <input id="destino" type="text" autocomplete="off" placeholder="Ej: Ezeiza, Buenos Aires">
+        <label for="destino">Destino</label>
+        <input id="destino" type="text" autocomplete="off" placeholder="Escribí destino (ej: Ezeiza)">
         <div class="suggestions" id="sugerenciasDestino"></div>
       </div>
-
       <div class="field">
         <label for="distancia">Distancia solo ida (km)</label>
         <input id="distancia" type="number" min="0" step="0.1" value="0">
-        <div class="status-badge" id="estadoRuta">
-          Elegí origen y destino de la lista
-        </div>
+        <div class="status-badge" id="estadoRuta">Elegí origen y destino de la lista</div>
       </div>
-
-      <a class="btn btn-maps" id="mapa" target="_blank" rel="noopener">
-        🗺️ Ver recorrido en Google Maps
-      </a>
+      <a class="btn btn-maps" id="mapa" target="_blank" rel="noopener">🗺️ Ver recorrido en Google Maps</a>
     </section>
 
     <section>
       <h2 class="section-title">⛽ Vehículo y gastos</h2>
-
       <div class="grid-2 field">
         <div>
           <label for="consumo">Consumo (L/100km)</label>
@@ -517,7 +326,6 @@
           <input id="precio" type="number" min="0" step="0.01" value="1200">
         </div>
       </div>
-
       <div class="grid-2 field">
         <div>
           <label for="peajeIda">Peajes ida ($)</label>
@@ -528,12 +336,10 @@
           <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
         </div>
       </div>
-
       <div class="field">
         <label for="horasEspera">Horas de espera ($2.000 / hora)</label>
         <input id="horasEspera" type="number" min="0" step="0.5" value="0">
       </div>
-
       <label class="switch-row" for="ganancia">
         <div>
           <span>Aplicar ganancia del 120%</span>
@@ -545,48 +351,18 @@
 
     <section class="ticket-card">
       <h2 class="section-title">🧾 Resumen del presupuesto</h2>
-
-      <div class="ticket-row">
-        <span>Distancia total (ida y vuelta)</span>
-        <strong id="kmTotal">0 km</strong>
-      </div>
-      <div class="ticket-row">
-        <span>Combustible necesario</span>
-        <strong id="litros">0 L</strong>
-      </div>
-      <div class="ticket-row">
-        <span>Gasto en combustible</span>
-        <strong id="costoNafta">$ 0</strong>
-      </div>
-      <div class="ticket-row">
-        <span>Total peajes</span>
-        <strong id="costoPeajes">$ 0</strong>
-      </div>
-      <div class="ticket-row">
-        <span>Tiempo de espera</span>
-        <strong id="costoEspera">$ 0</strong>
-      </div>
-      <div class="ticket-row ticket-profit">
-        <span>Tu ganancia neta (120%)</span>
-        <strong id="montoGanancia">$ 0</strong>
-      </div>
-
-      <div class="total-box">
-        <span>Total Cliente</span>
-        <strong id="total">$ 0</strong>
-      </div>
-
-      <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
-        📲 Enviar presupuesto por WhatsApp
-      </button>
-
-      <button type="button" class="btn btn-save-trip" id="btnPasarACliente">
-        💾 Registrar este viaje en Clientes
-      </button>
+      <div class="ticket-row"><span>Distancia total (ida y vuelta)</span><strong id="kmTotal">0 km</strong></div>
+      <div class="ticket-row"><span>Combustible necesario</span><strong id="litros">0 L</strong></div>
+      <div class="ticket-row"><span>Gasto en combustible</span><strong id="costoNafta">$ 0</strong></div>
+      <div class="ticket-row"><span>Total peajes</span><strong id="costoPeajes">$ 0</strong></div>
+      <div class="ticket-row"><span>Tiempo de espera</span><strong id="costoEspera">$ 0</strong></div>
+      <div class="ticket-row ticket-profit"><span>Tu ganancia neta (120%)</span><strong id="montoGanancia">$ 0</strong></div>
+      <div class="total-box"><span>Total Cliente</span><strong id="total">$ 0</strong></div>
+      <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">📲 Enviar presupuesto por WhatsApp</button>
+      <button type="button" class="btn btn-save-trip" id="btnPasarACliente">💾 Registrar este viaje en Clientes</button>
     </section>
   </div>
 
-  <!-- VISTA 2: CLIENTES Y CALIFICACIONES -->
   <div id="vista-clientes" class="view">
     <details class="client-dropdown" id="desplegableCliente">
       <summary>➕ Agregar cliente / viaje realizado</summary>
@@ -601,24 +377,20 @@
             <input id="cliTelefono" type="tel" placeholder="Ej: 3444 123456">
           </div>
         </div>
-
         <div class="field">
-          <label for="cliOrigen">¿De dónde salió? (Origen)</label>
+          <label for="cliOrigen">Origen</label>
           <input id="cliOrigen" type="text" placeholder="Ej: Gualeguay">
         </div>
-
         <div class="field">
-          <label for="cliDestino">¿A dónde lo llevaste? (Destino)</label>
+          <label for="cliDestino">Destino</label>
           <input id="cliDestino" type="text" placeholder="Ej: Aeropuerto Ezeiza">
         </div>
-
         <div class="field">
-          <label for="cliCobrado">¿Cuánto le cobraste? ($)</label>
+          <label for="cliCobrado">Monto cobrado ($)</label>
           <input id="cliCobrado" type="number" min="0" step="1" placeholder="Ej: 150000">
         </div>
-
         <div class="field">
-          <label>Calificación (¿Volverías a llevarlo?)</label>
+          <label>Calificación</label>
           <div class="star-picker" id="selectorEstrellas">
             <button type="button" class="star-btn selected" data-val="1">★</button>
             <button type="button" class="star-btn selected" data-val="2">★</button>
@@ -627,22 +399,18 @@
             <button type="button" class="star-btn selected" data-val="5">★</button>
           </div>
         </div>
-
         <div class="field">
-          <label for="cliNota">Observaciones (opcional)</label>
-          <input id="cliNota" type="text" placeholder="Ej: Muy puntual, pagó al contado">
+          <label for="cliNota">Observaciones</label>
+          <input id="cliNota" type="text" placeholder="Ej: Muy puntual">
         </div>
-
-        <button type="button" class="btn btn-primary" id="btnGuardarCliente">
-          ✅ Guardar en mi agenda
-        </button>
+        <button type="button" class="btn btn-primary" id="btnGuardarCliente">✅ Guardar en mi agenda</button>
       </div>
     </details>
 
     <section>
       <h2 class="section-title">📋 Historial de pasajeros</h2>
       <div class="field">
-        <input id="buscarCliente" type="text" placeholder="🔍 Buscar por nombre, destino o nota...">
+        <input id="buscarCliente" type="text" placeholder="🔍 Buscar por nombre o destino...">
       </div>
       <div id="listaClientes"></div>
     </section>
@@ -650,55 +418,82 @@
 </main>
 
 <script>
-  const idsGuardados = [
-    "consumo", "precio", "peajeIda", "peajeVuelta", "horasEspera"
+(function() {
+  const CIUDADES_BASE = [
+    { nombre: "Gualeguay, Entre Ríos", lat: -33.1416, lon: -59.3097 },
+    { nombre: "Gualeguaychú, Entre Ríos", lat: -33.0094, lon: -58.5172 },
+    { nombre: "Victoria, Entre Ríos", lat: -32.6184, lon: -60.1548 },
+    { nombre: "Paraná, Entre Ríos", lat: -31.7333, lon: -60.5297 },
+    { nombre: "Concepción del Uruguay, Entre Ríos", lat: -32.4825, lon: -58.2372 },
+    { nombre: "Concordia, Entre Ríos", lat: -31.3930, lon: -58.0209 },
+    { nombre: "Colón, Entre Ríos", lat: -32.2241, lon: -58.1411 },
+    { nombre: "Nogoyá, Entre Ríos", lat: -32.3939, lon: -59.7894 },
+    { nombre: "Rosario del Tala, Entre Ríos", lat: -32.3028, lon: -59.1456 },
+    { nombre: "Villaguay, Entre Ríos", lat: -31.8653, lon: -59.0269 },
+    { nombre: "La Paz, Entre Ríos", lat: -30.7417, lon: -59.6453 },
+    { nombre: "Chajarí, Entre Ríos", lat: -30.7519, lon: -57.9881 },
+    { nombre: "Federación, Entre Ríos", lat: -30.9886, lon: -57.9214 },
+    { nombre: "Diamante, Entre Ríos", lat: -32.0667, lon: -60.6333 },
+    { nombre: "Crespo, Entre Ríos", lat: -32.0292, lon: -60.3069 },
+    { nombre: "Basavilbaso, Entre Ríos", lat: -32.3717, lon: -58.8808 },
+    { nombre: "Urdinarrain, Entre Ríos", lat: -32.6853, lon: -58.8878 },
+    { nombre: "Larroque, Entre Ríos", lat: -33.0333, lon: -59.0000 },
+    { nombre: "General Galarza, Entre Ríos", lat: -32.7208, lon: -59.3944 },
+    { nombre: "Ibicuy, Entre Ríos", lat: -33.7500, lon: -59.1833 },
+    { nombre: "Ceibas, Entre Ríos", lat: -33.4333, lon: -58.7833 },
+    { nombre: "Aeropuerto Internacional Ezeiza, Buenos Aires", lat: -34.8222, lon: -58.5358 },
+    { nombre: "Aeroparque Jorge Newbery, CABA", lat: -34.5592, lon: -58.4156 },
+    { nombre: "Retiro / Centro, Buenos Aires (CABA)", lat: -34.5914, lon: -58.3747 },
+    { nombre: "Zárate, Buenos Aires", lat: -34.0981, lon: -59.0286 },
+    { nombre: "Campana, Buenos Aires", lat: -34.1687, lon: -58.9591 },
+    { nombre: "San Nicolás de los Arroyos, Buenos Aires", lat: -33.3358, lon: -60.2252 },
+    { nombre: "La Plata, Buenos Aires", lat: -34.9214, lon: -57.9544 },
+    { nombre: "Mar del Plata, Buenos Aires", lat: -38.0055, lon: -57.5426 },
+    { nombre: "Rosario, Santa Fe", lat: -32.9468, lon: -60.6393 },
+    { nombre: "Santa Fe Capital, Santa Fe", lat: -31.6333, lon: -60.7000 },
+    { nombre: "Rafaela, Santa Fe", lat: -31.2503, lon: -61.4867 },
+    { nombre: "Córdoba Capital, Córdoba", lat: -31.4201, lon: -64.1888 },
+    { nombre: "Villa Carlos Paz, Córdoba", lat: -31.4241, lon: -64.4978 }
   ];
 
+  const idsGuardados = ["consumo", "precio", "peajeIda", "peajeVuelta", "horasEspera"];
   const lugares = { origen: null, destino: null };
-  const temporizadores = {};
   const ganancia = document.getElementById("ganancia");
-  let numeroSolicitudRuta = 0;
   let totalActual = 0;
   let estrellasSeleccionadas = 5;
 
   function moneda(valor) {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      maximumFractionDigits: 0
-    }).format(valor);
+    return "$ " + Math.round(valor).toLocaleString("es-AR");
   }
 
-  /* --- NAVEGACIÓN ENTRE PESTAÑAS --- */
   function cambiarPestana(nombreTab) {
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.tab === nombreTab);
+    document.querySelectorAll(".tab-btn").forEach(function(btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === nombreTab);
     });
-    document.querySelectorAll(".view").forEach(vista => {
+    document.querySelectorAll(".view").forEach(function(vista) {
       vista.classList.toggle("active", vista.id === "vista-" + nombreTab);
     });
   }
 
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => cambiarPestana(btn.dataset.tab));
+  document.querySelectorAll(".tab-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      cambiarPestana(btn.getAttribute("data-tab"));
+    });
   });
 
-  /* --- CALCULADORA DE VIAJES --- */
   function guardar() {
     const datos = {};
-    idsGuardados.forEach(id => {
+    idsGuardados.forEach(function(id) {
       datos[id] = document.getElementById(id).value;
     });
     datos.ganancia = ganancia.checked;
-
     try {
       localStorage.setItem("viajesFernaCostos", JSON.stringify(datos));
-    } catch (error) {}
+    } catch (e) {}
   }
 
   function actualizar() {
     guardar();
-
     const origenTexto = document.getElementById("origen").value.trim();
     const destinoTexto = document.getElementById("destino").value.trim();
 
@@ -708,16 +503,16 @@
       "&destination=" + encodeURIComponent(destinoTexto) +
       "&travelmode=driving";
 
-    const kmIda = Number(document.getElementById("distancia").value) || 0;
-    const consumo = Number(document.getElementById("consumo").value) || 0;
-    const precio = Number(document.getElementById("precio").value) || 0;
+    const kmIda = parseFloat(document.getElementById("distancia").value) || 0;
+    const consumo = parseFloat(document.getElementById("consumo").value) || 0;
+    const precio = parseFloat(document.getElementById("precio").value) || 0;
     const peajes =
-      (Number(document.getElementById("peajeIda").value) || 0) +
-      (Number(document.getElementById("peajeVuelta").value) || 0);
-    const horas = Number(document.getElementById("horasEspera").value) || 0;
+      (parseFloat(document.getElementById("peajeIda").value) || 0) +
+      (parseFloat(document.getElementById("peajeVuelta").value) || 0);
+    const horas = parseFloat(document.getElementById("horasEspera").value) || 0;
 
     const kmTotal = kmIda * 2;
-    const litros = kmTotal * consumo / 100;
+    const litros = (kmTotal * consumo) / 100;
     const costoNafta = litros * precio;
     const costoEspera = horas * 2000;
     const subtotal = costoNafta + peajes + costoEspera;
@@ -725,10 +520,8 @@
     const total = subtotal + montoGanancia;
     totalActual = Math.round(total);
 
-    document.getElementById("kmTotal").textContent =
-      kmTotal.toLocaleString("es-AR") + " km";
-    document.getElementById("litros").textContent =
-      litros.toLocaleString("es-AR", { maximumFractionDigits: 1 }) + " L";
+    document.getElementById("kmTotal").textContent = kmTotal.toLocaleString("es-AR") + " km";
+    document.getElementById("litros").textContent = litros.toFixed(1).replace(".", ",") + " L";
     document.getElementById("costoNafta").textContent = moneda(costoNafta);
     document.getElementById("costoPeajes").textContent = moneda(peajes);
     document.getElementById("costoEspera").textContent = moneda(costoEspera);
@@ -736,10 +529,249 @@
     document.getElementById("total").textContent = moneda(total);
   }
 
-  function cajaSugerencias(campo) {
-    return document.getElementById(
-      campo === "origen" ? "sugerenciasOrigen" : "sugerenciasDestino"
-    );
+  function normalizar(str) {
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  function ocultarSugerencias(campo) 
+  function mostrarSugerencias(campo) {
+    const input = document.getElementById(campo);
+    const caja = document.getElementById(campo === "origen" ? "sugerenciasOrigen" : "sugerenciasDestino");
+    const texto = normalizar(input.value.trim());
+
+    lugares[campo] = null;
+
+    if (texto.length < 2) {
+      caja.style.display = "none";
+      caja.innerHTML ="";
+      return;
+    }
+
+    const coincidencias = CIUDADES_BASE.filter(function(c) {
+      return normalizar(c.nombre).indexOf(texto) !== -1;
+    });
+
+    caja.innerHTML = "";
+
+    if (coincidencias.length > 0) {
+      coincidencias.forEach(function(item) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = item.nombre;
+        btn.addEventListener("click", function() {
+          input.value = item.nombre;
+          lugares[campo] = item;
+          caja.style.display = "none";
+          actualizar();
+          if (lugares.origen && lugares.destino) calcularRuta();
+        });
+        caja.appendChild(btn);
+      });
+      caja.style.display = "block";
+    } else {
+      buscarOnline(texto, campo, caja, input);
+    }
+  }
+
+  function buscarOnline(texto, campo, caja, input) {
+    caja.innerHTML = "<button type='button'>Buscando en mapa...</button>";
+    caja.style.display = "block";
+
+    fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(texto) + "&count=5&language=es&format=json")
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        caja.innerHTML = "";
+        if (!data.results || data.results.length === 0) {
+          caja.innerHTML = "<button type='button'>No encontrado. Ingresá los km abajo.</button>";
+          return;
+        }
+        data.results.forEach(function(res) {
+          const nombre = [res.name, res.admin1, res.country].filter(Boolean).join(", ");
+          const item = { nombre: nombre, lat: res.latitude, lon: res.longitude };
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = nombre;
+          btn.addEventListener("click", function() {
+            input.value = nombre;
+            lugares[campo] = item;
+            caja.style.display = "none";
+            actualizar();
+            if (lugares.origen && lugares.destino) calcularRuta();
+          });
+          caja.appendChild(btn);
+        });
+      })
+      .catch(function() {
+        caja.innerHTML = "<button type='button'>Sin conexión. Ingresá los km abajo.</button>";
+      });
+  }
+
+  function calcularRuta() {
+    if (!lugares.origen || !lugares.destino) return;
+    const estado = document.getElementById("estadoRuta");
+    estado.textContent = "Calculando ruta...";
+
+    const url = "https://router.project-osrm.org/route/v1/driving/" +
+      lugares.origen.lon + "," + lugares.origen.lat + ";" +
+      lugares.destino.lon + "," + lugares.destino.lat + "?overview=false";
+
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(datos) {
+        if (datos.code === "Ok" && datos.routes && datos.routes.length > 0) {
+          document.getElementById("distancia").value = (datos.routes[0].distance / 1000).toFixed(1);
+          estado.textContent = "✓ Distancia calculada automáticamente";
+          actualizar();
+        } else {
+          estado.textContent = "Ingresá los km manualmente";
+        }
+      })
+      .catch(function() {
+        estado.textContent = "Ingresá los km manualmente";
+      });
+  }
+
+  document.getElementById("btnWhatsapp").addEventListener("click", function() {
+    const origen = document.getElementById("origen").value.trim() || "Origen a confirmar";
+    const destino = document.getElementById("destino").value.trim() || "Destino a confirmar";
+    const horas = parseFloat(document.getElementById("horasEspera").value) || 0;
+
+    let mensaje = "Hola! Te paso el presupuesto del viaje:\n\n";
+    mensaje += "📍 *Origen:* " + origen + "\n";
+    mensaje += "🏁 *Destino:* " + destino + "\n";
+    if (horas > 0) mensaje += "⏱️ *Espera incluida:* " + horas + " hs\n";
+    mensaje += "💰 *Valor total del viaje:* " + moneda(totalActual) + "\n\n";
+    mensaje += "_Incluye combustible y peajes._";
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(mensaje), "_blank");
+  });
+
+  document.getElementById("btnPasarACliente").addEventListener("click", function() {
+    document.getElementById("cliOrigen").value = document.getElementById("origen").value.trim();
+    document.getElementById("cliDestino").value = document.getElementById("destino").value.trim();
+    document.getElementById("cliCobrado").value = totalActual > 0 ? totalActual : "";
+    document.getElementById("desplegableCliente").open = true;
+    cambiarPestana("clientes");
+  });
+
+  function obtenerClientes() {
+    try { return JSON.parse(localStorage.getItem("viajesFernaClientes") || "[]"); } catch (e) { return []; }
+  }
+
+  function guardarClientes(lista) {
+    try { localStorage.setItem("viajesFernaClientes", JSON.stringify(lista)); } catch (e) {}
+    renderizarClientes();
+  }
+
+  document.querySelectorAll("#selectorEstrellas .star-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      estrellasSeleccionadas = parseInt(btn.getAttribute("data-val"), 10);
+      document.querySelectorAll("#selectorEstrellas .star-btn").forEach(function(b) {
+        b.classList.toggle("selected", parseInt(b.getAttribute("data-val"), 10) <= estrellasSeleccionadas);
+      });
+    });
+  });
+
+  document.getElementById("btnGuardarCliente").addEventListener("click", function() {
+    const nombre = document.getElementById("cliNombre").value.trim();
+    if (!nombre) { alert("Ingresá el nombre del cliente."); return; }
+    const lista = obtenerClientes();
+    lista.unshift({
+      id: Date.now(),
+      nombre: nombre,
+      telefono: document.getElementById("cliTelefono").value.trim(),
+      origen: document.getElementById("cliOrigen").value.trim() || "No especificado",
+      destino: document.getElementById("cliDestino").value.trim() || "No especificado",
+      cobrado: parseFloat(document.getElementById("cliCobrado").value) || 0,
+      estrellas: estrellasSeleccionadas,
+      nota: document.getElementById("cliNota").value.trim(),
+      fecha: new Date().toLocaleDateString("es-AR")
+    });
+    guardarClientes(lista);
+    document.getElementById("cliNombre").value = "";
+    document.getElementById("cliTelefono").value = "";
+    document.getElementById("cliOrigen").value = "";
+    document.getElementById("cliDestino").value = "";
+    document.getElementById("cliCobrado").value = "";
+    document.getElementById("cliNota").value = "";
+    document.getElementById("desplegableCliente").open = false;
+  });
+
+  function renderizarClientes() {
+    const lista = obtenerClientes();
+    document.getElementById("contadorClientes").textContent = lista.length;
+    const filtro = document.getElementById("buscarCliente").value.toLowerCase().trim();
+    const filtrados = lista.filter(function(c) {
+      return c.nombre.toLowerCase().indexOf(filtro) !== -1 || c.destino.toLowerCase().indexOf(filtro) !== -1;
+    });
+
+    const contenedor = document.getElementById("listaClientes");
+    if (filtrados.length === 0) {
+      contenedor.innerHTML = '<div class="empty-state">No hay clientes registrados todavía.</div>';
+      return;
+    }
+
+    contenedor.innerHTML = "";
+    filtrados.forEach(function(c) {
+      const card = document.createElement("div");
+      card.className = "client-card";
+      const estrellas = "★".repeat(c.estrellas) + "☆".repeat(5 - c.estrellas);
+      const telLimpio = c.telefono.replace(/\D/g, "");
+      const waLink = telLimpio ? '<a class="mini-btn mini-wa" href="https://wa.me/549' + telLimpio + '" target="_blank">WhatsApp</a>' : '';
+
+      card.innerHTML =
+        '<div class="client-header">' +
+          '<div><div class="client-name">' + c.nombre + '</div><small style="color:var(--muted)">' + c.fecha + '</small></div>' +
+          '<div class="client-stars">' + estrellas + '</div>' +
+        '</div>' +
+        '<div class="client-route"><strong>De:</strong> ' + c.origen + '<br><strong>A:</strong> ' + c.destino + '</div>' +
+        (c.nota ? '<div class="client-note">"' + c.nota + '"</div>' : '') +
+        '<div class="client-footer">' +
+          '<span class="client-price">' + moneda(c.cobrado) + '</span>' +
+          '<div style="display:flex;gap:8px">' + waLink + '<button type="button" class="mini-btn mini-del">Borrar</button></div>' +
+        '</div>';
+
+      card.querySelector(".mini-del").addEventListener("click", function() {
+        if (confirm("¿Borrar este registro?")) {
+          guardarClientes(obtenerClientes().filter(function(item) { return item.id !== c.id; }));
+        }
+      });
+      contenedor.appendChild(card);
+    });
+  }
+
+  document.getElementById("buscarCliente").addEventListener("input", renderizarClientes);
+
+  try {
+    const guardados = JSON.parse(localStorage.getItem("viajesFernaCostos") || "{}");
+    idsGuardados.forEach(function(id) {
+      if (guardados[id] !== undefined) document.getElementById(id).value = guardados[id];
+    });
+    if (typeof guardados.ganancia === "boolean") ganancia.checked = guardados.ganancia;
+  } catch (e) {}
+
+  ["origen", "destino"].forEach(function(campo) {
+    document.getElementById(campo).addEventListener("input", function() {
+      mostrarSugerencias(campo);
+      actualizar();
+    });
+  });
+
+  idsGuardados.forEach(function(id) {
+    document.getElementById(id).addEventListener("input", actualizar);
+  });
+  document.getElementById("distancia").addEventListener("input", actualizar);
+  ganancia.addEventListener("change", actualizar);
+
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".autocomplete")) {
+      document.getElementById("sugerenciasOrigen").style.display = "none";
+      document.getElementById("sugerenciasDestino").style.display = "none";
+    }
+  });
+
+  actualizar();
+  renderizarClientes();
+})();
+</script>
+</body>
+</html>
