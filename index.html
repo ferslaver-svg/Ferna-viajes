@@ -418,12 +418,9 @@ html
   });
 
   actualizar();
-```js
 window.addEventListener("pagehide", () => {
   localStorage.removeItem("viajesFerna");
 });
-```
-
   if (lugares.origen && lugares.destino) {
     calcularRuta();
   }
