@@ -2,44 +2,116 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#176b52">
-  <title>Viajes de Ferna</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#0f4c3a">
+  <title>Viajes de Ferna | Presupuestos</title>
   <style>
+    :root {
+      --primary: #0f4c3a;
+      --primary-light: #1a7a5e;
+      --accent: #10b981;
+      --bg: #eef3f1;
+      --card: #ffffff;
+      --text: #1e2925;
+      --muted: #64746f;
+      --border: #dce5e1;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding: 20px;
-      background: #f2f6f4;
-      color: #20312b;
-      font: 16px Arial, sans-serif;
+      padding: 0 0 30px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
-    main { max-width: 520px; margin: auto; }
-    h1 { color: #176b52; font-size: 25px; margin-bottom: 10px; }
-    h2 { margin-top: 0; font-size: 19px; color: #176b52; }
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 24px 20px 36px;
+      border-bottom-left-radius: 26px;
+      border-bottom-right-radius: 26px;
+      box-shadow: 0 4px 20px rgba(15, 76, 58, 0.2);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.3px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    main {
+      max-width: 480px;
+      margin: -22px auto 0;
+      padding: 0 16px;
+    }
 
     section {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
-      margin: 14px 0;
-      box-shadow: 0 2px 10px #163b2b12;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(20, 45, 35, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.8);
     }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
 
     label {
       display: block;
-      font-weight: bold;
-      margin: 14px 0 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
     }
 
-    input {
+    input[type="text"],
+    input[type="number"] {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ccd8d2;
-      border-radius: 9px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #f9fbfa;
+      color: var(--text);
       font-size: 16px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(26, 122, 94, 0.12);
     }
 
     .autocomplete { position: relative; }
@@ -47,162 +119,273 @@
     .suggestions {
       display: none;
       position: absolute;
-      z-index: 10;
-      top: 100%;
+      z-index: 20;
+      top: calc(100% + 4px);
       left: 0;
       right: 0;
-      max-height: 240px;
+      max-height: 230px;
       overflow-y: auto;
       background: white;
-      border: 1px solid #ccd8d2;
-      border-radius: 9px;
-      box-shadow: 0 4px 12px #163b2b20;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(15, 40, 30, 0.15);
     }
 
     .suggestions button {
       display: block;
       width: 100%;
-      padding: 11px;
+      padding: 12px 14px;
       border: 0;
-      border-bottom: 1px solid #eef2f0;
+      border-bottom: 1px solid #f0f4f2;
       background: white;
-      color: #20312b;
+      color: var(--text);
       text-align: left;
       font-size: 14px;
       cursor: pointer;
     }
 
-    .suggestions button:hover { background: #f2f6f4; }
+    .suggestions button:last-child { border-bottom: 0; }
+    .suggestions button:hover { background: #f2f8f5; }
 
-    .checkbox-label {
+    .status-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #e8f5f0;
+      color: var(--primary);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .switch-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      line-height: 1.4;
+      justify-content: space-between;
+      padding: 12px 14px;
+      margin-top: 14px;
+      background: #f4f8f6;
+      border-radius: 12px;
       cursor: pointer;
-      margin-top: 16px;
     }
 
-    .checkbox-label input {
-      width: 20px;
-      height: 20px;
-      margin: 0;
-      accent-color: #176b52;
-      flex: 0 0 auto;
+    .switch-row span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
     }
 
-    .button {
+    .switch-row small {
       display: block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .switch-row input {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Tarjeta oscura de resumen */
+    .ticket-card {
+      background: linear-gradient(145deg, #132a23 0%, #0b1915 100%);
+      color: #e6f0ec;
+      border: none;
+    }
+
+    .ticket-card .section-title {
+      color: #6ee7b7;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      font-size: 14.5px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+
+    .ticket-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .ticket-row span { color: #9eb5ad; }
+    .ticket-row strong { font-weight: 600; color: #ffffff; }
+
+    .ticket-profit strong { color: #6ee7b7; }
+
+    .total-box {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-box span {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #a7f3d0;
+    }
+
+    .total-box strong {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       margin-top: 14px;
       border: 0;
-      border-radius: 10px;
-      background: #176b52;
-      color: white;
-      text-align: center;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
       text-decoration: none;
-      font-size: 16px;
-      font-weight: bold;
       cursor: pointer;
+      transition: transform 0.1s ease, opacity 0.2s ease;
     }
 
-    .button-whatsapp {
+    .btn:active { transform: scale(0.98); }
+
+    .btn-maps {
+      background: #e8f5f0;
+      color: var(--primary);
+    }
+
+    .btn-whatsapp {
       background: #25D366;
-      color: #0b3d1e;
+      color: #062e16;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
     }
-
-    .note {
-      color: #62736c;
-      font-size: 13px;
-      line-height: 1.4;
-      margin: 5px 0 0;
-    }
-
-    .result { font-size: 16px; line-height: 1.8; }
-    .total { font-size: 22px; font-weight: bold; color: #176b52; margin-bottom: 0; }
-    #estadoRuta { min-height: 18px; color: #176b52; font-weight: bold; }
   </style>
 </head>
 
 <body>
-<main>
+
+<header>
   <h1>🚗 Viajes de Ferna</h1>
+  <p>Calculadora de traslados y presupuestos</p>
+</header>
 
+<main>
+  <!-- SECCIÓN RUTA -->
   <section>
-    <h2>Ruta</h2>
+    <h2 class="section-title">📍 Ruta del viaje</h2>
 
-    <label for="origen">Origen</label>
-    <div class="autocomplete">
-      <input id="origen" type="text" autocomplete="off"
-        placeholder="Ej: Gualeguay, Entre Ríos">
+    <div class="field autocomplete">
+      <label for="origen">Origen</label>
+      <input id="origen" type="text" autocomplete="off" placeholder="Ej: Gualeguay, Entre Ríos">
       <div class="suggestions" id="sugerenciasOrigen"></div>
     </div>
 
-    <label for="destino">Destino</label>
-    <div class="autocomplete">
-      <input id="destino" type="text" autocomplete="off"
-        placeholder="Ej: Aeropuerto Ezeiza">
+    <div class="field autocomplete">
+      <label for="destino">Destino</label>
+      <input id="destino" type="text" autocomplete="off" placeholder="Ej: Aeropuerto Ezeiza">
       <div class="suggestions" id="sugerenciasDestino"></div>
     </div>
 
-    <p class="note">
-      Escribí y elegí una sugerencia de la lista desplegable para calcular la ruta.
-    </p>
+    <div class="field">
+      <label for="distancia">Distancia solo ida (km)</label>
+      <input id="distancia" type="number" min="0" step="0.1" value="0">
+      <div class="status-badge" id="estadoRuta">
+        Elegí origen y destino de la lista
+      </div>
+    </div>
 
-    <label for="distancia">Distancia de ida (km)</label>
-    <input id="distancia" type="number" min="0" step="0.1" value="0">
-    <p class="note" id="estadoRuta">
-      Elegí una sugerencia para el origen y otra para el destino.
-    </p>
-
-    <a class="button" id="mapa" target="_blank" rel="noopener">
-      Abrir ruta en Google Maps
+    <a class="btn btn-maps" id="mapa" target="_blank" rel="noopener">
+      🗺️ Ver recorrido en Google Maps
     </a>
   </section>
 
+  <!-- SECCIÓN COSTOS -->
   <section>
-    <h2>Vehículo y costos</h2>
+    <h2 class="section-title">⛽ Vehículo y gastos</h2>
 
-    <label for="consumo">Consumo (litros cada 100 km)</label>
-    <input id="consumo" type="number" min="0" step="0.1" value="8.5">
+    <div class="grid-2 field">
+      <div>
+        <label for="consumo">Consumo (L/100km)</label>
+        <input id="consumo" type="number" min="0" step="0.1" value="8.5">
+      </div>
+      <div>
+        <label for="precio">Nafta Súper YPF ($)</label>
+        <input id="precio" type="number" min="0" step="0.01" value="1200">
+      </div>
+    </div>
 
-    <label for="precio">Precio Nafta Súper YPF ($ por litro)</label>
-    <input id="precio" type="number" min="0" step="0.01" value="1200">
-    <p class="note">
-      Se guarda automáticamente el último valor que ingreses.
-    </p>
+    <div class="grid-2 field">
+      <div>
+        <label for="peajeIda">Peajes ida ($)</label>
+        <input id="peajeIda" type="number" min="0" step="0.01" value="0">
+      </div>
+      <div>
+        <label for="peajeVuelta">Peajes vuelta ($)</label>
+        <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
+      </div>
+    </div>
 
-    <label for="peajeIda">Peajes de ida ($)</label>
-    <input id="peajeIda" type="number" min="0" step="0.01" value="0">
+    <div class="field">
+      <label for="horasEspera">Horas de espera ($2.000 / hora)</label>
+      <input id="horasEspera" type="number" min="0" step="0.5" value="0">
+    </div>
 
-    <label for="peajeVuelta">Peajes de vuelta ($)</label>
-    <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
-
-    <label for="horasEspera">Horas de espera</label>
-    <input id="horasEspera" type="number" min="0" step="0.5" value="0">
-    <p class="note">Cada hora suma $2.000 al costo base.</p>
-
-    <label class="checkbox-label" for="ganancia">
+    <label class="switch-row" for="ganancia">
+      <div>
+        <span>Aplicar ganancia del 120%</span>
+        <small>Multiplica el costo operativo por 2,2</small>
+      </div>
       <input id="ganancia" type="checkbox" checked>
-      Aplicar 120% extra de ganancia
     </label>
-    <p class="note">Al marcarla, el costo total se multiplica por 2,2.</p>
   </section>
 
-  <section>
-    <h2>Estimación del viaje completo</h2>
-    <div class="result">
-      Distancia total (ida y vuelta): <strong id="kmTotal">—</strong><br>
-      Combustible estimado: <strong id="litros">—</strong><br>
-      Gasto en combustible: <strong id="costoNafta">—</strong><br>
-      Total de peajes: <strong id="costoPeajes">—</strong><br>
-      Costo de espera: <strong id="costoEspera">—</strong><br>
-      Tu ganancia (120%): <strong id="montoGanancia">—</strong>
-    </div>
-    <p class="total">Precio final cliente: <span id="total">—</span></p>
+  <!-- SECCIÓN RESUMEN -->
+  <section class="ticket-card">
+    <h2 class="section-title">🧾 Resumen del presupuesto</h2>
 
-    <button type="button" class="button button-whatsapp" id="btnWhatsapp">
+    <div class="ticket-row">
+      <span>Distancia total (ida y vuelta)</span>
+      <strong id="kmTotal">0 km</strong>
+    </div>
+    <div class="ticket-row">
+      <span>Combustible necesario</span>
+      <strong id="litros">0 L</strong>
+    </div>
+    <div class="ticket-row">
+      <span>Gasto en combustible</span>
+      <strong id="costoNafta">$ 0</strong>
+    </div>
+    <div class="ticket-row">
+      <span>Total peajes</span>
+      <strong id="costoPeajes">$ 0</strong>
+    </div>
+    <div class="ticket-row">
+      <span>Tiempo de espera</span>
+      <strong id="costoEspera">$ 0</strong>
+    </div>
+    <div class="ticket-row ticket-profit">
+      <span>Tu ganancia neta (120%)</span>
+      <strong id="montoGanancia">$ 0</strong>
+    </div>
+
+    <div class="total-box">
+      <span>Total Cliente</span>
+      <strong id="total">$ 0</strong>
+    </div>
+
+    <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
       📲 Enviar presupuesto por WhatsApp
     </button>
   </section>
@@ -223,7 +406,7 @@
     return new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",
-      maximumFractionDigits: 2
+      maximumFractionDigits: 0
     }).format(valor);
   }
 
@@ -271,7 +454,7 @@
     document.getElementById("kmTotal").textContent =
       kmTotal.toLocaleString("es-AR") + " km";
     document.getElementById("litros").textContent =
-      litros.toLocaleString("es-AR", { maximumFractionDigits: 2 }) + " L";
+      litros.toLocaleString("es-AR", { maximumFractionDigits: 1 }) + " L";
     document.getElementById("costoNafta").textContent = moneda(costoNafta);
     document.getElementById("costoPeajes").textContent = moneda(peajes);
     document.getElementById("costoEspera").textContent = moneda(costoEspera);
@@ -299,7 +482,7 @@
     lugares[campo] = null;
     numeroSolicitudRuta++;
     document.getElementById("estadoRuta").textContent =
-      "Elegí una sugerencia para el origen y otra para el destino.";
+      "Elegí una opción de la lista desplegable";
 
     if (temporizadores[campo]) clearTimeout(temporizadores[campo]);
 
@@ -388,7 +571,7 @@
 
     const solicitudActual = ++numeroSolicitudRuta;
     const estado = document.getElementById("estadoRuta");
-    estado.textContent = "Calculando la ruta…";
+    estado.textContent = "Calculando ruta…";
 
     try {
       const inicio = lugares.origen;
@@ -410,13 +593,12 @@
 
       document.getElementById("distancia").value =
         (datos.routes[0].distance / 1000).toFixed(1);
-      estado.textContent =
-        "✓ Distancia de ida calculada automáticamente.";
+      estado.textContent = "✓ Ruta calculada automáticamente";
       actualizar();
     } catch (error) {
       if (solicitudActual === numeroSolicitudRuta) {
         estado.textContent =
-          "No se pudo calcular la ruta. Podés ingresar los km de ida manualmente.";
+          "No se pudo calcular. Ingresá los km manualmente.";
       }
     }
   }
@@ -480,3 +662,4 @@
 </script>
 </body>
   </html>
+  
