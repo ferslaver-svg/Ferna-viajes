@@ -51,7 +51,6 @@
       opacity: 0.85;
     }
 
-    /* Pestañas de navegación */
     .tabs {
       display: flex;
       gap: 8px;
@@ -130,8 +129,7 @@
 
     input[type="text"],
     input[type="tel"],
-    input[type="number"],
-    textarea {
+    input[type="number"] {
       width: 100%;
       padding: 12px 14px;
       border: 1.5px solid var(--border);
@@ -144,7 +142,7 @@
       transition: all 0.2s ease;
     }
 
-    input:focus, textarea:focus {
+    input:focus {
       outline: none;
       border-color: var(--primary-light);
       background: #ffffff;
@@ -156,16 +154,16 @@
     .suggestions {
       display: none;
       position: absolute;
-      z-index: 20;
+      z-index: 30;
       top: calc(100% + 4px);
       left: 0;
       right: 0;
-      max-height: 230px;
+      max-height: 240px;
       overflow-y: auto;
       background: white;
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--primary-light);
       border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(15, 40, 30, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 40, 30, 0.2);
     }
 
     .suggestions button {
@@ -177,12 +175,14 @@
       background: white;
       color: var(--text);
       text-align: left;
-      font-size: 14px;
+      font-size: 13.5px;
+      line-height: 1.35;
       cursor: pointer;
     }
 
     .suggestions button:last-child { border-bottom: 0; }
-    .suggestions button:hover { background: #f2f8f5; }
+    .suggestions button:hover,
+    .suggestions button:active { background: #e8f5f0; }
 
     .status-badge {
       display: inline-block;
@@ -353,7 +353,6 @@
       border-top: 1px solid #f0f4f2;
     }
 
-    /* Selector de estrellitas */
     .star-picker {
       display: flex;
       gap: 8px;
@@ -377,7 +376,6 @@
       background: #fffbeb;
     }
 
-    /* Tarjetas de historial de clientes */
     .client-card {
       background: #f9fbfa;
       border: 1.5px solid var(--border);
@@ -484,14 +482,14 @@
       <h2 class="section-title">📍 Ruta del viaje</h2>
 
       <div class="field autocomplete">
-        <label for="origen">Origen</label>
+        <label for="origen">Origen (escribí y tocá una opción)</label>
         <input id="origen" type="text" autocomplete="off" placeholder="Ej: Gualeguay, Entre Ríos">
         <div class="suggestions" id="sugerenciasOrigen"></div>
       </div>
 
       <div class="field autocomplete">
-        <label for="destino">Destino</label>
-        <input id="destino" type="text" autocomplete="off" placeholder="Ej: Aeropuerto Ezeiza">
+        <label for="destino">Destino (escribí y tocá una opción)</label>
+        <input id="destino" type="text" autocomplete="off" placeholder="Ej: Ezeiza, Buenos Aires">
         <div class="suggestions" id="sugerenciasDestino"></div>
       </div>
 
@@ -736,10 +734,4 @@
     document.getElementById("costoNafta").textContent = moneda(costoNafta);
     document.getElementById("costoPeajes").textContent = moneda(peajes);
     document.getElementById("costoEspera").textContent = moneda(costoEspera);
-    document.getElementById("montoGanancia").textContent = moneda(montoGanancia);
-    document.getElementById("total").textContent = moneda(total);
-  }
-
-  function cajaSugerencias(campo) {
-    return document.getElementById(
-      campo === "origen" ? "sugere
+    document.
