@@ -1,4 +1,4 @@
-html
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,76 +8,145 @@ html
   <title>Viajes de Ferna</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
-      margin: 0; padding: 20px; background: #f2f6f4;
-      color: #20312b; font: 16px Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f2f6f4;
+      color: #20312b;
+      font: 16px Arial, sans-serif;
     }
+
     main { max-width: 520px; margin: auto; }
     h1 { color: #176b52; font-size: 25px; }
+
     section {
-      background: white; border-radius: 16px; padding: 18px;
-      margin: 14px 0; box-shadow: 0 2px 10px #163b2b12;
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      margin: 14px 0;
+      box-shadow: 0 2px 10px #163b2b12;
     }
-    label { display: block; font-weight: bold; margin: 14px 0 6px; }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 14px 0 6px;
+    }
+
     input {
-      width: 100%; padding: 12px; border: 1px solid #ccd8d2;
-      border-radius: 9px; font-size: 16px;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd8d2;
+      border-radius: 9px;
+      font-size: 16px;
     }
+
     .autocomplete { position: relative; }
+
     .suggestions {
-      display: none; position: absolute; z-index: 10; top: 100%;
-      left: 0; right: 0; max-height: 240px; overflow-y: auto;
-      background: white; border: 1px solid #ccd8d2;
-      border-radius: 9px; box-shadow: 0 4px 12px #163b2b20;
+      display: none;
+      position: absolute;
+      z-index: 10;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 240px;
+      overflow-y: auto;
+      background: white;
+      border: 1px solid #ccd8d2;
+      border-radius: 9px;
+      box-shadow: 0 4px 12px #163b2b20;
     }
+
     .suggestions button {
-      display: block; width: 100%; padding: 11px; border: 0;
-      border-bottom: 1px solid #eef2f0; background: white;
-      color: #20312b; text-align: left; font-size: 14px; cursor: pointer;
+      display: block;
+      width: 100%;
+      padding: 11px;
+      border: 0;
+      border-bottom: 1px solid #eef2f0;
+      background: white;
+      color: #20312b;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
     }
+
     .suggestions button:hover { background: #f2f6f4; }
+
     .checkbox-label {
-      display: flex; align-items: center; gap: 10px;
-      line-height: 1.4; cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.4;
+      cursor: pointer;
     }
+
     .checkbox-label input {
-      width: 20px; height: 20px; margin: 0;
-      accent-color: #176b52; flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: #176b52;
+      flex: 0 0 auto;
     }
+
     .button {
-      display: block; width: 100%; padding: 13px; margin-top: 14px;
-      border-radius: 10px; background: #176b52; color: white;
-      text-align: center; text-decoration: none; font-weight: bold;
+      display: block;
+      width: 100%;
+      padding: 13px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #176b52;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
     }
-    .note { color: #62736c; font-size: 13px; line-height: 1.4; }
+
+    .note {
+      color: #62736c;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
     .result { font-size: 17px; line-height: 1.8; }
-    .total { color: #176b52; font-size: 21px; font-weight: bold; }
+    .total { font-size: 21px; font-weight: bold; color: #176b52; }
+    #estadoRuta { min-height: 18px; }
   </style>
 </head>
+
 <body>
 <main>
   <h1>🚗 Viajes de Ferna</h1>
 
   <section>
     <h2>Ruta</h2>
+
     <label for="origen">Origen</label>
     <div class="autocomplete">
-      <input id="origen" autocomplete="off"
-        value="Intendente Quintana 926, Gualeguay, Entre Ríos">
+      <input id="origen" type="text" autocomplete="off"
+        placeholder="Escribí una dirección o ciudad">
       <div class="suggestions" id="sugerenciasOrigen"></div>
     </div>
 
     <label for="destino">Destino</label>
     <div class="autocomplete">
-      <input id="destino" autocomplete="off"
-        value="Fraternidad 1414, Paraná, Entre Ríos">
+      <input id="destino" type="text" autocomplete="off"
+        placeholder="Escribí una dirección o ciudad">
       <div class="suggestions" id="sugerenciasDestino"></div>
     </div>
 
-    <p class="note">Escribí y elegí una sugerencia en cada campo para calcular la ruta.</p>
+    <p class="note">
+      Escribí y elegí una sugerencia en cada campo para calcular la ruta.
+    </p>
+
     <label for="distancia">Distancia de ida (km)</label>
     <input id="distancia" type="number" min="0" step="0.1" value="192">
-    <p class="note" id="estadoRuta">Elegí una sugerencia para el origen y el destino.</p>
+    <p class="note" id="estadoRuta">
+      Elegí una sugerencia para el origen y otra para el destino.
+    </p>
 
     <a class="button" id="mapa" target="_blank" rel="noopener">
       Abrir ruta en Google Maps
@@ -86,18 +155,22 @@ html
 
   <section>
     <h2>Vehículo y costos</h2>
+
     <label for="consumo">Consumo (litros cada 100 km)</label>
     <input id="consumo" type="number" min="0" step="0.1" value="8.5">
 
-    <label for="precio">Precio por litro de nafta Súper YPF ($)</label>
-    <input id="precio" type="number" min="0" step="0.01" placeholder="Ingresá el precio">
+    <label for="precio">Precio estimativo por litro de nafta ($)</label>
+    <input id="precio" type="number" min="0" step="0.01" value="2208.33">
+    <p class="note">
+      Valor de referencia editable; puede variar según la estación y la localidad.
+    </p>
 
     <label for="peajeIda">Peajes de ida ($)</label>
     <input id="peajeIda" type="number" min="0" step="0.01" value="0">
 
     <label for="peajeVuelta">Peajes de vuelta ($)</label>
     <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
-    <p class="note">Cargá manualmente los peajes; pueden variar según la ruta.</p>
+    <p class="note">Cargá los peajes manualmente; pueden cambiar según la ruta.</p>
 
     <label for="horasEspera">Horas de espera</label>
     <input id="horasEspera" type="number" min="0" step="1" value="0">
@@ -122,15 +195,16 @@ html
     <p class="total">Total estimado: <span id="total">—</span></p>
   </section>
 </main>
+
 <script>
-  const ids = [
-    "origen", "destino", "distancia", "consumo", "precio",
+ js
+  const idsGuardados = [
+    "distancia", "consumo", "precio",
     "peajeIda", "peajeVuelta", "horasEspera"
   ];
 
   const lugares = { origen: null, destino: null };
   const temporizadores = {};
-  const numeroBusqueda = { origen: 0, destino: 0 };
   const ganancia = document.getElementById("ganancia");
   let numeroSolicitudRuta = 0;
 
@@ -144,59 +218,51 @@ html
 
   function guardar() {
     const datos = {};
-    ids.forEach(id => {
+    idsGuardados.forEach(id => {
       datos[id] = document.getElementById(id).value;
     });
-
     datos.ganancia = ganancia.checked;
-    datos.lugares = lugares;
 
     try {
-      localStorage.setItem("viajesFerna", JSON.stringify(datos));
-    } catch (error) {
-      // La página sigue funcionando aunque el almacenamiento no esté disponible.
-    }
+      localStorage.setItem("viajesFernaCostos", JSON.stringify(datos));
+    } catch (error) {}
   }
 
   function actualizar() {
     guardar();
 
-    const origen = document.getElementById("origen").value.trim();
-    const destino = document.getElementById("destino").value.trim();
+    const origenTexto = document.getElementById("origen").value.trim();
+    const destinoTexto = document.getElementById("destino").value.trim();
 
     document.getElementById("mapa").href =
       "https://www.google.com/maps/dir/?api=1&origin=" +
-      encodeURIComponent(origen) +
-      "&destination=" + encodeURIComponent(destino) +
+      encodeURIComponent(origenTexto) +
+      "&destination=" + encodeURIComponent(destinoTexto) +
       "&travelmode=driving";
 
-    const km = Number(document.getElementById("distancia").value) || 0;
+    const kmIda = Number(document.getElementById("distancia").value) || 0;
     const consumo = Number(document.getElementById("consumo").value) || 0;
-    const precioTexto = document.getElementById("precio").value;
-    const precio = Number(precioTexto) || 0;
-
+    const precio = Number(document.getElementById("precio").value) || 0;
     const peajes =
       (Number(document.getElementById("peajeIda").value) || 0) +
       (Number(document.getElementById("peajeVuelta").value) || 0);
-
     const horas = Number(document.getElementById("horasEspera").value) || 0;
-    const kmTotal = km * 2;
+
+    const kmTotal = kmIda * 2;
     const litros = kmTotal * consumo / 100;
-    const nafta = litros * precio;
+    const costoNafta = litros * precio;
     const costoEspera = horas * 2000;
-    const subtotal = nafta + peajes + costoEspera;
+    const subtotal = costoNafta + peajes + costoEspera;
     const total = ganancia.checked ? subtotal * 2.2 : subtotal;
 
     document.getElementById("kmTotal").textContent =
       kmTotal.toLocaleString("es-AR") + " km";
     document.getElementById("litros").textContent =
       litros.toLocaleString("es-AR", { maximumFractionDigits: 2 }) + " L";
-    document.getElementById("costoNafta").textContent =
-      precioTexto ? moneda(nafta) : "Ingresá el precio por litro";
+    document.getElementById("costoNafta").textContent = moneda(costoNafta);
     document.getElementById("costoPeajes").textContent = moneda(peajes);
     document.getElementById("costoEspera").textContent = moneda(costoEspera);
-    document.getElementById("total").textContent =
-      precioTexto ? moneda(total) : "Ingresá el precio de la nafta";
+    document.getElementById("total").textContent = moneda(total);
   }
 
   function cajaSugerencias(campo) {
@@ -211,32 +277,15 @@ html
     caja.innerHTML = "";
   }
 
-  function mostrarMensaje(caja, mensaje) {
-    caja.innerHTML = "";
-    const boton = document.createElement("button");
-    boton.type = "button";
-    boton.textContent = mensaje;
-    boton.disabled = true;
-    caja.appendChild(boton);
-    caja.style.display = "block";
-  }
-
   function buscarSugerencias(campo) {
     const input = document.getElementById(campo);
     const texto = input.value.trim();
     const caja = cajaSugerencias(campo);
 
-    // El texto cambió: la selección previa ya no corresponde.
     lugares[campo] = null;
-    numeroBusqueda[campo]++;
     numeroSolicitudRuta++;
-
-    document.getElementById("distancia").value = "";
     document.getElementById("estadoRuta").textContent =
-      "Elegí una sugerencia para el origen y el destino.";
-    actualizar();
-
-    const busquedaActual = numeroBusqueda[campo];
+      "Elegí una sugerencia para el origen y otra para el destino.";
 
     if (temporizadores[campo]) clearTimeout(temporizadores[campo]);
 
@@ -246,43 +295,40 @@ html
     }
 
     temporizadores[campo] = setTimeout(async () => {
-      mostrarMensaje(caja, "Buscando…");
+      caja.innerHTML = "<button type='button'>Buscando…</button>";
+      caja.style.display = "block";
 
       try {
         const url =
-          "https://photon.komoot.io/api/?limit=5&q=" +
+          "https://photon.komoot.io/api/?limit=5&lang=es&q=" +
           encodeURIComponent(texto);
-
         const respuesta = await fetch(url);
         if (!respuesta.ok) throw new Error("Error de búsqueda");
 
         const datos = await respuesta.json();
-
-        // Ignora respuestas de búsquedas anteriores.
-        if (
-          busquedaActual !== numeroBusqueda[campo] ||
-          input.value.trim() !== texto
-        ) return;
+        if (input.value.trim() !== texto) return;
 
         caja.innerHTML = "";
 
         if (!datos.features || datos.features.length === 0) {
-          mostrarMensaje(caja, "No se encontraron lugares");
+          caja.innerHTML =
+            "<button type='button'>No se encontraron lugares</button>";
+          caja.style.display = "block";
           return;
         }
 
         datos.features.forEach(lugar => {
-          const p = lugar.properties || {};
-          const coordenadas = lugar.geometry && lugar.geometry.coordinates;
+          const propiedades = lugar.properties || {};
+          const coordenadas = lugar.geometry?.coordinates;
           if (!coordenadas) return;
 
           const partes = [
-            p.name,
-            p.street,
-            p.housenumber,
-            p.city || p.town || p.village,
-            p.state,
-            p.country
+            propiedades.name,
+            propiedades.street,
+            propiedades.housenumber,
+            propiedades.city || propiedades.town || propiedades.village,
+            propiedades.state,
+            propiedades.country
           ].filter(Boolean);
 
           const nombre = [...new Set(partes)].join(", ");
@@ -299,83 +345,74 @@ html
               lon: coordenadas[0],
               lat: coordenadas[1]
             };
-
             ocultarSugerencias(campo);
             actualizar();
-            calcularRuta();
+
+            if (lugares.origen && lugares.destino) {
+              calcularRuta();
+            }
           });
 
           caja.appendChild(boton);
         });
 
         if (!caja.children.length) {
-          mostrarMensaje(caja, "No se encontraron lugares");
-        } else {
-          caja.style.display = "block";
+          caja.innerHTML =
+            "<button type='button'>No se encontraron lugares</button>";
         }
+        caja.style.display = "block";
       } catch (error) {
-        if (busquedaActual === numeroBusqueda[campo]) {
-          mostrarMensaje(caja, "Error al buscar. Probá de nuevo.");
-        }
+        caja.innerHTML =
+          "<button type='button'>Error al buscar. Probá de nuevo.</button>";
+        caja.style.display = "block";
       }
     }, 400);
   }
 
   async function calcularRuta() {
-    const estado = document.getElementById("estadoRuta");
-
-    if (!lugares.origen || !lugares.destino) {
-      estado.textContent =
-        "Elegí una sugerencia para el origen y el destino.";
-      return;
-    }
+    if (!lugares.origen || !lugares.destino) return;
 
     const solicitudActual = ++numeroSolicitudRuta;
+    const estado = document.getElementById("estadoRuta");
     estado.textContent = "Calculando la ruta…";
 
     try {
       const inicio = lugares.origen;
       const fin = lugares.destino;
-
       const url =
         "https://router.project-osrm.org/route/v1/driving/" +
         inicio.lon + "," + inicio.lat + ";" +
-        fin.lon + "," + fin.lat +
-        "?overview=false";
+        fin.lon + "," + fin.lat + "?overview=false";
 
       const respuesta = await fetch(url);
-      if (!respuesta.ok) throw new Error("Error de ruta");
+      if (!respuesta.ok) throw new Error("Error al calcular ruta");
 
       const datos = await respuesta.json();
-
-      // Evita que una respuesta vieja reemplace la ruta más reciente.
       if (solicitudActual !== numeroSolicitudRuta) return;
 
-      if (datos.code !== "Ok" || !datos.routes || !datos.routes.length) {
+      if (datos.code !== "Ok" || !datos.routes?.length) {
         throw new Error("No se encontró una ruta");
       }
 
       document.getElementById("distancia").value =
         (datos.routes[0].distance / 1000).toFixed(1);
-
       estado.textContent =
-        "Distancia calculada automáticamente. Podés corregirla.";
+        "Distancia de ida calculada. El total incluye ida y vuelta.";
       actualizar();
     } catch (error) {
       if (solicitudActual === numeroSolicitudRuta) {
         estado.textContent =
-          "No se pudo calcular la ruta. Ingresá los kilómetros manualmente.";
+          "No se pudo calcular la ruta. Podés ingresar los kilómetros de ida manualmente.";
       }
     }
   }
 
-  // Recupera los datos guardados.
   try {
     const guardados = JSON.parse(
-      localStorage.getItem("viajesFerna") || "{}"
+      localStorage.getItem("viajesFernaCostos") || "{}"
     );
 
-    ids.forEach(id => {
+    idsGuardados.forEach(id => {
       if (guardados[id] !== undefined) {
         document.getElementById(id).value = guardados[id];
       }
@@ -384,27 +421,16 @@ html
     if (typeof guardados.ganancia === "boolean") {
       ganancia.checked = guardados.ganancia;
     }
+  } catch (error) {}
 
-    if (guardados.lugares) {
-      lugares.origen = guardados.lugares.origen || null;
-      lugares.destino = guardados.lugares.destino || null;
-    }
-  } catch (error) {
-    // Si los datos guardados no se pueden leer, se usan los valores iniciales.
-  }
-
-  document.getElementById("origen").addEventListener("input", () => {
-    buscarSugerencias("origen");
+  ["origen", "destino"].forEach(campo => {
+    document.getElementById(campo).addEventListener("input", () => {
+      buscarSugerencias(campo);
+      actualizar();
+    });
   });
 
-  document.getElementById("destino").addEventListener("input", () => {
-    buscarSugerencias("destino");
-  });
-
-  [
-    "distancia", "consumo", "precio", "peajeIda",
-    "peajeVuelta", "horasEspera"
-  ].forEach(id => {
+  idsGuardados.forEach(id => {
     document.getElementById(id).addEventListener("input", actualizar);
   });
 
@@ -418,12 +444,6 @@ html
   });
 
   actualizar();
-window.addEventListener("pagehide", () => {
-  localStorage.removeItem("viajesFerna");
-});
-  if (lugares.origen && lugares.destino) {
-    calcularRuta();
-  }
 </script>
 </body>
-</html>
+</html> 
