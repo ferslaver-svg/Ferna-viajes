@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#0f4c3a">
-  <title>Viajes de Ferna | Presupuestos</title>
+  <title>Viajes de Ferna | Presupuestos y Clientes</title>
   <style>
     :root {
       --primary: #0f4c3a;
@@ -15,13 +15,14 @@
       --text: #1e2925;
       --muted: #64746f;
       --border: #dce5e1;
+      --star: #f59e0b;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      padding: 0 0 30px;
+      padding: 0 0 36px;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -31,7 +32,7 @@
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
       color: white;
-      padding: 24px 20px 36px;
+      padding: 22px 20px 38px;
       border-bottom-left-radius: 26px;
       border-bottom-right-radius: 26px;
       box-shadow: 0 4px 20px rgba(15, 76, 58, 0.2);
@@ -40,14 +41,44 @@
 
     header h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 23px;
       letter-spacing: -0.3px;
     }
 
     header p {
-      margin: 6px 0 0;
+      margin: 4px 0 14px;
       font-size: 13px;
       opacity: 0.85;
+    }
+
+    /* Pestañas de navegación */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      max-width: 340px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px;
+      border-radius: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     main {
@@ -55,6 +86,9 @@
       margin: -22px auto 0;
       padding: 0 16px;
     }
+
+    .view { display: none; }
+    .view.active { display: block; }
 
     section {
       background: var(--card);
@@ -70,7 +104,7 @@
       align-items: center;
       gap: 8px;
       margin: 0 0 14px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--primary);
       text-transform: uppercase;
@@ -95,19 +129,22 @@
     }
 
     input[type="text"],
-    input[type="number"] {
+    input[type="tel"],
+    input[type="number"],
+    textarea {
       width: 100%;
       padding: 12px 14px;
       border: 1.5px solid var(--border);
       border-radius: 12px;
       background: #f9fbfa;
       color: var(--text);
-      font-size: 16px;
+      font-family: inherit;
+      font-size: 15px;
       font-weight: 500;
       transition: all 0.2s ease;
     }
 
-    input:focus {
+    input:focus, textarea:focus {
       outline: none;
       border-color: var(--primary-light);
       background: #ffffff;
@@ -196,9 +233,7 @@
       border: none;
     }
 
-    .ticket-card .section-title {
-      color: #6ee7b7;
-    }
+    .ticket-card .section-title { color: #6ee7b7; }
 
     .ticket-row {
       display: flex;
@@ -209,13 +244,9 @@
       border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
     }
 
-    .ticket-row:last-of-type {
-      border-bottom: none;
-    }
-
+    .ticket-row:last-of-type { border-bottom: none; }
     .ticket-row span { color: #9eb5ad; }
     .ticket-row strong { font-weight: 600; color: #ffffff; }
-
     .ticket-profit strong { color: #6ee7b7; }
 
     .total-box {
@@ -248,8 +279,8 @@
       justify-content: center;
       gap: 8px;
       width: 100%;
-      padding: 14px;
-      margin-top: 14px;
+      padding: 13px 14px;
+      margin-top: 12px;
       border: 0;
       border-radius: 14px;
       font-size: 15px;
@@ -261,6 +292,11 @@
 
     .btn:active { transform: scale(0.98); }
 
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
     .btn-maps {
       background: #e8f5f0;
       color: var(--primary);
@@ -271,6 +307,161 @@
       color: #062e16;
       box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
     }
+
+    .btn-save-trip {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Desplegable de Clientes */
+    details.client-dropdown {
+      background: var(--card);
+      border-radius: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(20, 45, 35, 0.06);
+      overflow: hidden;
+    }
+
+    details.client-dropdown summary {
+      list-style: none;
+      padding: 18px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+    }
+
+    details.client-dropdown summary::-webkit-details-marker { display: none; }
+
+    details.client-dropdown summary::after {
+      content: "▼";
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    details.client-dropdown[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-body {
+      padding: 4px 20px 20px;
+      border-top: 1px solid #f0f4f2;
+    }
+
+    /* Selector de estrellitas */
+    .star-picker {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .star-btn {
+      background: #f4f8f6;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 22px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: all 0.15s ease;
+    }
+
+    .star-btn.selected {
+      color: var(--star);
+      border-color: #fcd34d;
+      background: #fffbeb;
+    }
+
+    /* Tarjetas de historial de clientes */
+    .client-card {
+      background: #f9fbfa;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .client-card:last-child { margin-bottom: 0; }
+
+    .client-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .client-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .client-stars {
+      color: var(--star);
+      font-size: 15px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .client-route {
+      font-size: 13.5px;
+      color: var(--text);
+      margin: 4px 0;
+      line-height: 1.4;
+    }
+
+    .client-note {
+      font-size: 12.5px;
+      color: var(--muted);
+      font-style: italic;
+      margin: 4px 0 8px;
+    }
+
+    .client-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid #e6edea;
+      font-size: 13px;
+    }
+
+    .client-price {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 15px;
+    }
+
+    .client-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 0;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .mini-wa { background: #dcfce7; color: #166534; }
+    .mini-del { background: #fee2e2; color: #991b1b; }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 20px 10px;
+    }
   </style>
 </head>
 
@@ -278,117 +469,188 @@
 
 <header>
   <h1>🚗 Viajes de Ferna</h1>
-  <p>Calculadora de traslados y presupuestos</p>
+  <p>Calculadora de traslados y agenda</p>
+
+  <div class="tabs">
+    <button type="button" class="tab-btn active" data-tab="cotizador">🧮 Cotizador</button>
+    <button type="button" class="tab-btn" data-tab="clientes">👥 Clientes (<span id="contadorClientes">0</span>)</button>
+  </div>
 </header>
 
 <main>
-  <!-- SECCIÓN RUTA -->
-  <section>
-    <h2 class="section-title">📍 Ruta del viaje</h2>
+  <!-- VISTA 1: COTIZADOR -->
+  <div id="vista-cotizador" class="view active">
+    <section>
+      <h2 class="section-title">📍 Ruta del viaje</h2>
 
-    <div class="field autocomplete">
-      <label for="origen">Origen</label>
-      <input id="origen" type="text" autocomplete="off" placeholder="Ej: Gualeguay, Entre Ríos">
-      <div class="suggestions" id="sugerenciasOrigen"></div>
-    </div>
-
-    <div class="field autocomplete">
-      <label for="destino">Destino</label>
-      <input id="destino" type="text" autocomplete="off" placeholder="Ej: Aeropuerto Ezeiza">
-      <div class="suggestions" id="sugerenciasDestino"></div>
-    </div>
-
-    <div class="field">
-      <label for="distancia">Distancia solo ida (km)</label>
-      <input id="distancia" type="number" min="0" step="0.1" value="0">
-      <div class="status-badge" id="estadoRuta">
-        Elegí origen y destino de la lista
+      <div class="field autocomplete">
+        <label for="origen">Origen</label>
+        <input id="origen" type="text" autocomplete="off" placeholder="Ej: Gualeguay, Entre Ríos">
+        <div class="suggestions" id="sugerenciasOrigen"></div>
       </div>
-    </div>
 
-    <a class="btn btn-maps" id="mapa" target="_blank" rel="noopener">
-      🗺️ Ver recorrido en Google Maps
-    </a>
-  </section>
-
-  <!-- SECCIÓN COSTOS -->
-  <section>
-    <h2 class="section-title">⛽ Vehículo y gastos</h2>
-
-    <div class="grid-2 field">
-      <div>
-        <label for="consumo">Consumo (L/100km)</label>
-        <input id="consumo" type="number" min="0" step="0.1" value="8.5">
+      <div class="field autocomplete">
+        <label for="destino">Destino</label>
+        <input id="destino" type="text" autocomplete="off" placeholder="Ej: Aeropuerto Ezeiza">
+        <div class="suggestions" id="sugerenciasDestino"></div>
       </div>
-      <div>
-        <label for="precio">Nafta Súper YPF ($)</label>
-        <input id="precio" type="number" min="0" step="0.01" value="1200">
+
+      <div class="field">
+        <label for="distancia">Distancia solo ida (km)</label>
+        <input id="distancia" type="number" min="0" step="0.1" value="0">
+        <div class="status-badge" id="estadoRuta">
+          Elegí origen y destino de la lista
+        </div>
       </div>
-    </div>
 
-    <div class="grid-2 field">
-      <div>
-        <label for="peajeIda">Peajes ida ($)</label>
-        <input id="peajeIda" type="number" min="0" step="0.01" value="0">
+      <a class="btn btn-maps" id="mapa" target="_blank" rel="noopener">
+        🗺️ Ver recorrido en Google Maps
+      </a>
+    </section>
+
+    <section>
+      <h2 class="section-title">⛽ Vehículo y gastos</h2>
+
+      <div class="grid-2 field">
+        <div>
+          <label for="consumo">Consumo (L/100km)</label>
+          <input id="consumo" type="number" min="0" step="0.1" value="8.5">
+        </div>
+        <div>
+          <label for="precio">Nafta Súper YPF ($)</label>
+          <input id="precio" type="number" min="0" step="0.01" value="1200">
+        </div>
       </div>
-      <div>
-        <label for="peajeVuelta">Peajes vuelta ($)</label>
-        <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
+
+      <div class="grid-2 field">
+        <div>
+          <label for="peajeIda">Peajes ida ($)</label>
+          <input id="peajeIda" type="number" min="0" step="0.01" value="0">
+        </div>
+        <div>
+          <label for="peajeVuelta">Peajes vuelta ($)</label>
+          <input id="peajeVuelta" type="number" min="0" step="0.01" value="0">
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label for="horasEspera">Horas de espera ($2.000 / hora)</label>
-      <input id="horasEspera" type="number" min="0" step="0.5" value="0">
-    </div>
-
-    <label class="switch-row" for="ganancia">
-      <div>
-        <span>Aplicar ganancia del 120%</span>
-        <small>Multiplica el costo operativo por 2,2</small>
+      <div class="field">
+        <label for="horasEspera">Horas de espera ($2.000 / hora)</label>
+        <input id="horasEspera" type="number" min="0" step="0.5" value="0">
       </div>
-      <input id="ganancia" type="checkbox" checked>
-    </label>
-  </section>
 
-  <!-- SECCIÓN RESUMEN -->
-  <section class="ticket-card">
-    <h2 class="section-title">🧾 Resumen del presupuesto</h2>
+      <label class="switch-row" for="ganancia">
+        <div>
+          <span>Aplicar ganancia del 120%</span>
+          <small>Multiplica el costo operativo por 2,2</small>
+        </div>
+        <input id="ganancia" type="checkbox" checked>
+      </label>
+    </section>
 
-    <div class="ticket-row">
-      <span>Distancia total (ida y vuelta)</span>
-      <strong id="kmTotal">0 km</strong>
-    </div>
-    <div class="ticket-row">
-      <span>Combustible necesario</span>
-      <strong id="litros">0 L</strong>
-    </div>
-    <div class="ticket-row">
-      <span>Gasto en combustible</span>
-      <strong id="costoNafta">$ 0</strong>
-    </div>
-    <div class="ticket-row">
-      <span>Total peajes</span>
-      <strong id="costoPeajes">$ 0</strong>
-    </div>
-    <div class="ticket-row">
-      <span>Tiempo de espera</span>
-      <strong id="costoEspera">$ 0</strong>
-    </div>
-    <div class="ticket-row ticket-profit">
-      <span>Tu ganancia neta (120%)</span>
-      <strong id="montoGanancia">$ 0</strong>
-    </div>
+    <section class="ticket-card">
+      <h2 class="section-title">🧾 Resumen del presupuesto</h2>
 
-    <div class="total-box">
-      <span>Total Cliente</span>
-      <strong id="total">$ 0</strong>
-    </div>
+      <div class="ticket-row">
+        <span>Distancia total (ida y vuelta)</span>
+        <strong id="kmTotal">0 km</strong>
+      </div>
+      <div class="ticket-row">
+        <span>Combustible necesario</span>
+        <strong id="litros">0 L</strong>
+      </div>
+      <div class="ticket-row">
+        <span>Gasto en combustible</span>
+        <strong id="costoNafta">$ 0</strong>
+      </div>
+      <div class="ticket-row">
+        <span>Total peajes</span>
+        <strong id="costoPeajes">$ 0</strong>
+      </div>
+      <div class="ticket-row">
+        <span>Tiempo de espera</span>
+        <strong id="costoEspera">$ 0</strong>
+      </div>
+      <div class="ticket-row ticket-profit">
+        <span>Tu ganancia neta (120%)</span>
+        <strong id="montoGanancia">$ 0</strong>
+      </div>
 
-    <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
-      📲 Enviar presupuesto por WhatsApp
-    </button>
-  </section>
+      <div class="total-box">
+        <span>Total Cliente</span>
+        <strong id="total">$ 0</strong>
+      </div>
+
+      <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
+        📲 Enviar presupuesto por WhatsApp
+      </button>
+
+      <button type="button" class="btn btn-save-trip" id="btnPasarACliente">
+        💾 Registrar este viaje en Clientes
+      </button>
+    </section>
+  </div>
+
+  <!-- VISTA 2: CLIENTES Y CALIFICACIONES -->
+  <div id="vista-clientes" class="view">
+    <details class="client-dropdown" id="desplegableCliente">
+      <summary>➕ Agregar cliente / viaje realizado</summary>
+      <div class="dropdown-body">
+        <div class="grid-2 field">
+          <div>
+            <label for="cliNombre">Nombre del cliente *</label>
+            <input id="cliNombre" type="text" placeholder="Ej: Carlos Gómez">
+          </div>
+          <div>
+            <label for="cliTelefono">Teléfono / WhatsApp</label>
+            <input id="cliTelefono" type="tel" placeholder="Ej: 3444 123456">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cliOrigen">¿De dónde salió? (Origen)</label>
+          <input id="cliOrigen" type="text" placeholder="Ej: Gualeguay">
+        </div>
+
+        <div class="field">
+          <label for="cliDestino">¿A dónde lo llevaste? (Destino)</label>
+          <input id="cliDestino" type="text" placeholder="Ej: Aeropuerto Ezeiza">
+        </div>
+
+        <div class="field">
+          <label for="cliCobrado">¿Cuánto le cobraste? ($)</label>
+          <input id="cliCobrado" type="number" min="0" step="1" placeholder="Ej: 150000">
+        </div>
+
+        <div class="field">
+          <label>Calificación (¿Volverías a llevarlo?)</label>
+          <div class="star-picker" id="selectorEstrellas">
+            <button type="button" class="star-btn selected" data-val="1">★</button>
+            <button type="button" class="star-btn selected" data-val="2">★</button>
+            <button type="button" class="star-btn selected" data-val="3">★</button>
+            <button type="button" class="star-btn selected" data-val="4">★</button>
+            <button type="button" class="star-btn selected" data-val="5">★</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cliNota">Observaciones (opcional)</label>
+          <input id="cliNota" type="text" placeholder="Ej: Muy puntual, pagó al contado">
+        </div>
+
+        <button type="button" class="btn btn-primary" id="btnGuardarCliente">
+          ✅ Guardar en mi agenda
+        </button>
+      </div>
+    </details>
+
+    <section>
+      <h2 class="section-title">📋 Historial de pasajeros</h2>
+      <div class="field">
+        <input id="buscarCliente" type="text" placeholder="🔍 Buscar por nombre, destino o nota...">
+      </div>
+      <div id="listaClientes"></div>
+    </section>
+  </div>
 </main>
 
 <script>
@@ -401,6 +663,7 @@
   const ganancia = document.getElementById("ganancia");
   let numeroSolicitudRuta = 0;
   let totalActual = 0;
+  let estrellasSeleccionadas = 5;
 
   function moneda(valor) {
     return new Intl.NumberFormat("es-AR", {
@@ -410,6 +673,21 @@
     }).format(valor);
   }
 
+  /* --- NAVEGACIÓN ENTRE PESTAÑAS --- */
+  function cambiarPestana(nombreTab) {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.tab === nombreTab);
+    });
+    document.querySelectorAll(".view").forEach(vista => {
+      vista.classList.toggle("active", vista.id === "vista-" + nombreTab);
+    });
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => cambiarPestana(btn.dataset.tab));
+  });
+
+  /* --- CALCULADORA DE VIAJES --- */
   function guardar() {
     const datos = {};
     idsGuardados.forEach(id => {
@@ -449,7 +727,7 @@
     const subtotal = costoNafta + peajes + costoEspera;
     const montoGanancia = ganancia.checked ? subtotal * 1.2 : 0;
     const total = subtotal + montoGanancia;
-    totalActual = total;
+    totalActual = Math.round(total);
 
     document.getElementById("kmTotal").textContent =
       kmTotal.toLocaleString("es-AR") + " km";
@@ -464,202 +742,4 @@
 
   function cajaSugerencias(campo) {
     return document.getElementById(
-      campo === "origen" ? "sugerenciasOrigen" : "sugerenciasDestino"
-    );
-  }
-
-  function ocultarSugerencias(campo) {
-    const caja = cajaSugerencias(campo);
-    caja.style.display = "none";
-    caja.innerHTML = "";
-  }
-
-  function buscarSugerencias(campo) {
-    const input = document.getElementById(campo);
-    const texto = input.value.trim();
-    const caja = cajaSugerencias(campo);
-
-    lugares[campo] = null;
-    numeroSolicitudRuta++;
-    document.getElementById("estadoRuta").textContent =
-      "Elegí una opción de la lista desplegable";
-
-    if (temporizadores[campo]) clearTimeout(temporizadores[campo]);
-
-    if (texto.length < 3) {
-      ocultarSugerencias(campo);
-      return;
-    }
-
-    temporizadores[campo] = setTimeout(async () => {
-      caja.innerHTML = "<button type='button'>Buscando…</button>";
-      caja.style.display = "block";
-
-      try {
-        const url =
-          "https://photon.komoot.io/api/?limit=6&lat=-33.14&lon=-59.31&q=" +
-          encodeURIComponent(texto);
-        const respuesta = await fetch(url);
-        if (!respuesta.ok) throw new Error("Error de búsqueda");
-
-        const datos = await respuesta.json();
-        if (input.value.trim() !== texto) return;
-
-        caja.innerHTML = "";
-
-        if (!datos.features || datos.features.length === 0) {
-          caja.innerHTML =
-            "<button type='button'>No se encontraron lugares</button>";
-          caja.style.display = "block";
-          return;
-        }
-
-        datos.features.forEach(lugar => {
-          const propiedades = lugar.properties || {};
-          const coordenadas = lugar.geometry?.coordinates;
-          if (!coordenadas) return;
-
-          const partes = [
-            propiedades.name,
-            propiedades.street,
-            propiedades.housenumber,
-            propiedades.city || propiedades.town || propiedades.village,
-            propiedades.state,
-            propiedades.country
-          ].filter(Boolean);
-
-          const nombre = [...new Set(partes)].join(", ");
-          if (!nombre) return;
-
-          const boton = document.createElement("button");
-          boton.type = "button";
-          boton.textContent = nombre;
-
-          boton.addEventListener("click", () => {
-            input.value = nombre;
-            lugares[campo] = {
-              nombre,
-              lon: coordenadas[0],
-              lat: coordenadas[1]
-            };
-            ocultarSugerencias(campo);
-            actualizar();
-
-            if (lugares.origen && lugares.destino) {
-              calcularRuta();
-            }
-          });
-
-          caja.appendChild(boton);
-        });
-
-        if (!caja.children.length) {
-          caja.innerHTML =
-            "<button type='button'>No se encontraron lugares</button>";
-        }
-        caja.style.display = "block";
-      } catch (error) {
-        caja.innerHTML =
-          "<button type='button'>Error al buscar. Probá de nuevo.</button>";
-        caja.style.display = "block";
-      }
-    }, 400);
-  }
-
-  async function calcularRuta() {
-    if (!lugares.origen || !lugares.destino) return;
-
-    const solicitudActual = ++numeroSolicitudRuta;
-    const estado = document.getElementById("estadoRuta");
-    estado.textContent = "Calculando ruta…";
-
-    try {
-      const inicio = lugares.origen;
-      const fin = lugares.destino;
-      const url =
-        "https://router.project-osrm.org/route/v1/driving/" +
-        inicio.lon + "," + inicio.lat + ";" +
-        fin.lon + "," + fin.lat + "?overview=false";
-
-      const respuesta = await fetch(url);
-      if (!respuesta.ok) throw new Error("Error al calcular ruta");
-
-      const datos = await respuesta.json();
-      if (solicitudActual !== numeroSolicitudRuta) return;
-
-      if (datos.code !== "Ok" || !datos.routes?.length) {
-        throw new Error("No se encontró una ruta");
-      }
-
-      document.getElementById("distancia").value =
-        (datos.routes[0].distance / 1000).toFixed(1);
-      estado.textContent = "✓ Ruta calculada automáticamente";
-      actualizar();
-    } catch (error) {
-      if (solicitudActual === numeroSolicitudRuta) {
-        estado.textContent =
-          "No se pudo calcular. Ingresá los km manualmente.";
-      }
-    }
-  }
-
-  document.getElementById("btnWhatsapp").addEventListener("click", () => {
-    const origen = document.getElementById("origen").value.trim() || "Origen a confirmar";
-    const destino = document.getElementById("destino").value.trim() || "Destino a confirmar";
-    const horas = Number(document.getElementById("horasEspera").value) || 0;
-    
-    let mensaje = `Hola! Te paso el presupuesto del viaje:\n\n`;
-    mensaje += `📍 *Origen:* ${origen}\n`;
-    mensaje += `🏁 *Destino:* ${destino}\n`;
-    if (horas > 0) {
-      mensaje += `⏱️ *Espera incluida:* ${horas} hs\n`;
-    }
-    mensaje += `💰 *Valor total del viaje:* ${moneda(totalActual)}\n\n`;
-    mensaje += `_Incluye combustible y peajes._`;
-
-    const urlWhatsapp = "https://wa.me/?text=" + encodeURIComponent(mensaje);
-    window.open(urlWhatsapp, "_blank");
-  });
-
-  try {
-    const guardados = JSON.parse(
-      localStorage.getItem("viajesFernaCostos") || "{}"
-    );
-
-    idsGuardados.forEach(id => {
-      if (guardados[id] !== undefined) {
-        document.getElementById(id).value = guardados[id];
-      }
-    });
-
-    if (typeof guardados.ganancia === "boolean") {
-      ganancia.checked = guardados.ganancia;
-    }
-  } catch (error) {}
-
-  ["origen", "destino"].forEach(campo => {
-    document.getElementById(campo).addEventListener("input", () => {
-      buscarSugerencias(campo);
-      actualizar();
-    });
-  });
-
-  idsGuardados.forEach(id => {
-    document.getElementById(id).addEventListener("input", actualizar);
-  });
-  document.getElementById("distancia").addEventListener("input", actualizar);
-
-  ganancia.addEventListener("change", actualizar);
-
-  document.addEventListener("click", evento => {
-    if (!evento.target.closest(".autocomplete")) {
-      ocultarSugerencias("origen");
-      ocultarSugerencias("destino");
-    }
-  });
-
-  actualizar();
-</script>
-</body>
-  </html>
-  
+      campo === "origen" ? "sugere
